@@ -1,0 +1,53 @@
+name: QueueFlow CI
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  frontend-ci:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./client
+
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '20'
+        cache: 'npm'
+        cache-dependency-path: './client/package-lock.json'
+
+    - name: Install Frontend Dependencies
+      run: npm ci
+
+    - name: Build Frontend
+      run: npm run build
+
+  backend-ci:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./server
+
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '20'
+        cache: 'npm'
+        cache-dependency-path: './server/package-lock.json'
+
+    - name: Install Backend Dependencies
+      run: npm ci
+
+    # Add backend tests here in the future if applicable
+    # - name: Run Backend Tests
+    #   run: npm test
