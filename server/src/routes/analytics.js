@@ -198,12 +198,20 @@ router.get('/:queueId/trends', async (req, res) => {
               60000,
             ],
           },
+          serviceTime: {
+            $cond: [
+              { $ifNull: ['$completedAt', false] },
+              { $divide: [{ $subtract: ['$completedAt', '$calledAt'] }, 60000] },
+              null
+            ]
+          }
         },
       },
       {
         $group: {
           _id: '$day',
           avgWaitTime: { $avg: '$waitTime' },
+          avgServiceTime: { $avg: '$serviceTime' },
           count: { $sum: 1 },
         },
       },
@@ -213,6 +221,7 @@ router.get('/:queueId/trends', async (req, res) => {
           _id: 0,
           date: '$_id',
           avgWaitTime: { $round: ['$avgWaitTime', 2] },
+          avgServiceTime: { $round: [{ $ifNull: ['$avgServiceTime', 0] }, 2] },
           tokensCalled: '$count',
         },
       },

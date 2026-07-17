@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import {
   AreaChart, Area, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer,
+  PieChart, Pie, Cell, LineChart, Line
 } from 'recharts';
 import api from '../lib/api';
 import Navbar from '../components/Navbar';
@@ -17,10 +18,10 @@ const fallbackHourlyData = [
 ];
 
 const fallbackWeeklyData = [
-  { day: 'Mon', avgWait: 8 }, { day: 'Tue', avgWait: 6 },
-  { day: 'Wed', avgWait: 12 }, { day: 'Thu', avgWait: 10 },
-  { day: 'Fri', avgWait: 5 }, { day: 'Sat', avgWait: 9 },
-  { day: 'Sun', avgWait: 14 },
+  { day: 'Mon', avgWait: 8, avgServiceTime: 5 }, { day: 'Tue', avgWait: 6, avgServiceTime: 4 },
+  { day: 'Wed', avgWait: 12, avgServiceTime: 6 }, { day: 'Thu', avgWait: 10, avgServiceTime: 5 },
+  { day: 'Fri', avgWait: 5, avgServiceTime: 3 }, { day: 'Sat', avgWait: 9, avgServiceTime: 4 },
+  { day: 'Sun', avgWait: 14, avgServiceTime: 6 },
 ];
 
 const STAT_CARDS = [
@@ -112,6 +113,12 @@ export default function AnalyticsPage() {
   ];
 
   const statValues = [stats.waiting, stats.served, `${stats.avgWait}`, stats.cancelled];
+
+  const statusData = [
+    { name: 'Completed', value: stats.served, color: '#6bd8cb' }, // primary
+    { name: 'Waiting', value: stats.waiting, color: '#b9c7df' }, // secondary
+    { name: 'Cancelled', value: stats.cancelled, color: '#ffb4ab' }, // error
+  ];
 
   return (
     <div className="bg-background text-on-surface min-h-screen flex flex-col antialiased">
@@ -275,6 +282,82 @@ export default function AnalyticsPage() {
                       <Tooltip content={<CustomTooltip />} />
                       <Bar dataKey="avgWait" fill="url(#barGrad)" radius={[4, 4, 0, 0]} />
                     </BarChart>
+                  </ResponsiveContainer>
+                </div>
+              </div>
+            </section>
+
+            {/* New Charts */}
+            <section className="grid grid-cols-1 lg:grid-cols-2 gap-4 md:gap-6 mt-4 md:mt-2">
+              {/* Pie Chart: Patient Status Breakdown */}
+              <div className="bg-surface-variant/40 backdrop-blur-xl border border-outline-variant/40 rounded-xl p-5 flex flex-col h-[300px]">
+                <div className="flex justify-between items-center mb-4">
+                  <h2 className="text-xl font-semibold text-on-surface">Patient Status Breakdown</h2>
+                  <span className="text-xs font-semibold text-on-surface-variant">Today</span>
+                </div>
+                <div className="flex-grow w-full flex items-center justify-center">
+                  <ResponsiveContainer width="100%" height="100%">
+                    <PieChart>
+                      <Tooltip content={<CustomTooltip />} />
+                      <Pie
+                        data={statusData}
+                        cx="50%"
+                        cy="50%"
+                        innerRadius={60}
+                        outerRadius={90}
+                        paddingAngle={5}
+                        dataKey="value"
+                        stroke="none"
+                      >
+                        {statusData.map((entry, index) => (
+                          <Cell key={`cell-${index}`} fill={entry.color} style={{ filter: `drop-shadow(0 2px 4px ${entry.color}40)` }} />
+                        ))}
+                      </Pie>
+                    </PieChart>
+                  </ResponsiveContainer>
+                </div>
+                <div className="flex justify-center gap-6 mt-2">
+                  {statusData.map((entry, index) => (
+                    <div key={index} className="flex items-center gap-2">
+                      <span className="w-3 h-3 rounded-full" style={{ backgroundColor: entry.color }}></span>
+                      <span className="text-xs text-on-surface-variant uppercase tracking-wider">{entry.name}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* Line Chart: Average Service Time */}
+              <div className="bg-surface-variant/40 backdrop-blur-xl border border-outline-variant/40 rounded-xl p-5 flex flex-col h-[300px]">
+                <div className="flex justify-between items-center mb-4">
+                  <h2 className="text-xl font-semibold text-on-surface">Average Service Time</h2>
+                  <span className="text-xs font-semibold text-on-surface-variant">Last 7 Days (Mins)</span>
+                </div>
+                <div className="flex-grow w-full">
+                  <ResponsiveContainer width="100%" height="100%">
+                    <LineChart data={weeklyData}>
+                      <CartesianGrid strokeDasharray="4" stroke="rgba(61,73,71,0.3)" />
+                      <XAxis
+                        dataKey="day"
+                        tick={{ fill: '#bcc9c6', fontSize: 11 }}
+                        axisLine={{ stroke: 'rgba(61,73,71,0.4)' }}
+                        tickLine={false}
+                      />
+                      <YAxis
+                        tick={{ fill: '#bcc9c6', fontSize: 11 }}
+                        axisLine={false}
+                        tickLine={false}
+                      />
+                      <Tooltip content={<CustomTooltip />} />
+                      <Line
+                        type="monotone"
+                        dataKey="avgServiceTime"
+                        stroke="#b9c7df"
+                        strokeWidth={4}
+                        dot={{ fill: '#b9c7df', r: 4 }}
+                        activeDot={{ r: 6, fill: '#ffffff' }}
+                        style={{ filter: 'drop-shadow(0 4px 6px rgba(185,199,223,0.3))' }}
+                      />
+                    </LineChart>
                   </ResponsiveContainer>
                 </div>
               </div>

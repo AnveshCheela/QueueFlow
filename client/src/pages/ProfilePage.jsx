@@ -63,13 +63,7 @@ export default function ProfilePage() {
             </div>
           </div>
           
-          <button
-            onClick={handleLogout}
-            className="mt-4 md:mt-0 px-6 py-3 rounded-lg text-sm font-bold text-error bg-error-container/20 hover:bg-error-container hover:text-on-error-container transition-all cursor-pointer flex items-center gap-2 border border-error/30 uppercase tracking-wide"
-          >
-            <span className="material-symbols-outlined">logout</span>
-            Log Out
-          </button>
+          
         </div>
 
         {/* Stats Grid */}
