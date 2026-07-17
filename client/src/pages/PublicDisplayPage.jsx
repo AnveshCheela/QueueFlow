@@ -147,7 +147,7 @@ export default function PublicDisplayPage() {
       {/* Main Container */}
       <div className="flex flex-col h-screen w-full max-w-[1920px] mx-auto p-4 md:p-8 relative z-10">
         {/* Header */}
-        <header className="flex justify-between items-center mb-4 shrink-0">
+        <header className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-4 shrink-0">
           <div className="flex items-center gap-3">
             <span
               className="material-symbols-outlined text-white"
@@ -159,7 +159,7 @@ export default function PublicDisplayPage() {
               {queue?.name || 'Queue'}
             </h1>
           </div>
-          <div className="flex items-center gap-4">
+          <div className="flex flex-col md:flex-row items-center gap-4">
             <div className="glass-panel px-4 py-2 rounded-xl flex items-center gap-2">
               <span className="material-symbols-outlined text-white" style={{ fontSize: '1.75rem' }}>campaign</span>
               <span className="text-xl font-semibold text-on-surface">{TRANSLATIONS[lang].proceed}</span>
@@ -225,7 +225,7 @@ export default function PublicDisplayPage() {
             <h3 className="text-lg font-semibold text-on-surface-variant mb-3 uppercase tracking-wider border-b border-outline-variant/30 pb-2">
               {TRANSLATIONS[lang].upNext}
             </h3>
-            <div className="grid grid-cols-5 gap-4">
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
               {upNext.length === 0 ? (
                 <div className="col-span-5 text-center text-on-surface-variant/60 text-lg py-2">
                   {TRANSLATIONS[lang].noPatients}
@@ -253,7 +253,7 @@ export default function PublicDisplayPage() {
           </div>
 
           {/* Footer Utilities */}
-          <div className="flex justify-between items-end mt-1">
+          <div className="flex flex-col md:flex-row justify-between items-center md:items-end mt-1 gap-4 md:gap-0">
             <div className="flex items-center gap-4">
               <div className="bg-white p-2 rounded-lg">
                 <QRCodeCanvas 

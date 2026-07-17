@@ -129,7 +129,7 @@ export default function GlobalDisplayPage() {
       <div className="flex flex-col h-screen w-full max-w-[1920px] mx-auto p-4 md:p-8 relative z-10">
         
         {/* Header */}
-        <header className="flex justify-between items-center mb-6 shrink-0">
+        <header className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-6 shrink-0">
           <div className="flex items-center gap-4">
             <Link to="/home" className="text-white/50 hover:text-white transition-colors flex items-center">
               <span className="material-symbols-outlined text-4xl">arrow_back</span>
@@ -167,7 +167,7 @@ export default function GlobalDisplayPage() {
 
         {/* Dynamic Grid of Doctors */}
         <main className="flex-1 min-h-0 relative">
-          <div className={`w-full h-full grid gap-6 ${queues.length <= 4 ? 'grid-cols-2 grid-rows-2' : 'grid-cols-3 grid-rows-2'}`}>
+          <div className={`w-full h-full grid gap-6 ${queues.length <= 4 ? 'grid-cols-1 md:grid-cols-2' : 'grid-cols-1 sm:grid-cols-2 xl:grid-cols-3'}`}>
             {queues.map((queue) => (
               <div key={queue._id} className="glass-panel rounded-[32px] border border-white/20 p-8 flex flex-col relative overflow-hidden group shadow-2xl">
                 <div className="absolute top-0 left-0 w-full h-2 bg-white/20" />

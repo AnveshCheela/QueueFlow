@@ -62,9 +62,9 @@ export default function DashboardPage() {
 
       <main className="max-w-[1440px] mx-auto px-6 py-12 pt-20">
         {/* Header */}
-        <header className="flex justify-between items-center mb-12">
+        <header className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-8 sm:mb-12">
           <h1 className="text-3xl font-bold text-white tracking-tight">Active Queues</h1>
-          <div className="flex items-center gap-4">
+          <div className="flex flex-wrap items-center gap-4">
             <Link
               to="/global-display"
               className="px-4 py-2 rounded-lg text-xs font-semibold text-white bg-white/10 hover:bg-white/20 uppercase tracking-wider flex items-center gap-2 transition-colors border border-white/20"
