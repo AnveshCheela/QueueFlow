@@ -55,6 +55,7 @@ export default function MobileStatusPage() {
     });
     if (valid > 0) {
       avgServiceMs = totalTime / valid;
+      if (avgServiceMs < 60000) avgServiceMs = 60000; // Enforce minimum 1 minute per patient
     }
   }
   

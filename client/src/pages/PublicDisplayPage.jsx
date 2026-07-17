@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useParams } from 'react-router-dom';
 import api from '../lib/api';
 import { QRCodeCanvas } from 'qrcode.react';
@@ -43,8 +43,7 @@ export default function PublicDisplayPage() {
   const [clock, setClock] = useState('');
   const [loading, setLoading] = useState(true);
   const [lang, setLang] = useState('en');
-  const [lastSpoken, setLastSpoken] = useState(null);
-  
+  const spokenTokenRef = useRef(null);
   const LANGS = ['en', 'hi', 'te'];
 
   // Fetch queue data
