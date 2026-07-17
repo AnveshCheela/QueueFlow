@@ -59,8 +59,8 @@ const startServer = async () => {
     });
   });
 
-  httpServer.listen(PORT, () => {
-    console.log(`QueueFlow server running on port ${PORT}`);
+  httpServer.listen(PORT, '0.0.0.0', () => {
+    console.log(`QueueFlow server running on port ${PORT} at 0.0.0.0`);
   });
 };
 
