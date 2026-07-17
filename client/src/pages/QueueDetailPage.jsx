@@ -6,6 +6,7 @@ import NowServing from '../components/NowServing';
 import TokenRow from '../components/TokenRow';
 import StatusBadge from '../components/StatusBadge';
 import toast from 'react-hot-toast';
+import { socket } from '../lib/socket';
 
 export default function QueueDetailPage() {
   const { id } = useParams();
@@ -31,7 +32,14 @@ export default function QueueDetailPage() {
 
   useEffect(() => {
     fetchQueue();
-  }, [fetchQueue]);
+    
+    socket.emit('join-queue', id);
+    socket.on('queue-updated', fetchQueue);
+    
+    return () => {
+      socket.off('queue-updated', fetchQueue);
+    };
+  }, [fetchQueue, id]);
 
   const waitingTokens = tokens.filter((t) => t.status === 'waiting');
   const inServiceToken = tokens.find((t) => t.status === 'in-service');

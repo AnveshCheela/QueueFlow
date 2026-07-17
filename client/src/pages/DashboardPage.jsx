@@ -5,6 +5,7 @@ import Navbar from '../components/Navbar';
 import Modal from '../components/Modal';
 import Footer from '../components/Footer';
 import toast from 'react-hot-toast';
+import { socket } from '../lib/socket';
 
 export default function DashboardPage() {
   const [queues, setQueues] = useState([]);
@@ -28,6 +29,10 @@ export default function DashboardPage() {
 
   useEffect(() => {
     fetchQueues();
+    
+    // Real-time updates
+    socket.on('queues-updated', fetchQueues);
+    return () => socket.off('queues-updated', fetchQueues);
   }, []);
 
   const handleCreateQueue = async (e) => {

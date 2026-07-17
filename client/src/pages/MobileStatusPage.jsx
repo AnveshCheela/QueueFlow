@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import api from '../lib/api';
+import { socket } from '../lib/socket';
 
 export default function MobileStatusPage() {
   const { queueId } = useParams();
@@ -23,8 +24,13 @@ export default function MobileStatusPage() {
 
   useEffect(() => {
     fetchData();
-    const interval = setInterval(fetchData, 10000);
-    return () => clearInterval(interval);
+    
+    socket.emit('join-queue', queueId);
+    socket.on('queue-updated', fetchData);
+    
+    return () => {
+      socket.off('queue-updated', fetchData);
+    };
   }, [queueId]);
 
   if (loading) {
@@ -134,8 +140,11 @@ export default function MobileStatusPage() {
         </div>
       </main>
 
-      <footer className="p-6 text-center text-on-surface-variant/50 text-xs">
-        Updates automatically every 10 seconds.
+      <footer className="p-6 text-center text-on-surface-variant/50 text-xs flex flex-col items-center justify-center gap-1">
+        <div className="flex items-center gap-1 font-semibold text-white/50">
+          <span className="w-2 h-2 rounded-full bg-green-500 animate-pulse shadow-[0_0_8px_#22c55e]" /> LIVE
+        </div>
+        Updates instantly in real-time.
       </footer>
     </div>
   );

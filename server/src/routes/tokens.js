@@ -80,6 +80,10 @@ router.patch('/:tokenId/move', async (req, res) => {
       token,
       swappedWith: adjacentToken,
     });
+    
+    // Emit socket event
+    req.app.get('io').to(token.queueId.toString()).emit('queue-updated');
+    req.app.get('io').emit('queues-updated');
   } catch (error) {
     console.error('Move token error:', error);
     res.status(500).json({ message: 'Server error moving token.' });
@@ -121,6 +125,10 @@ router.patch('/:tokenId/complete', async (req, res) => {
     await token.save();
 
     res.json({ token });
+    
+    // Emit socket event
+    req.app.get('io').to(token.queueId.toString()).emit('queue-updated');
+    req.app.get('io').emit('queues-updated');
   } catch (error) {
     console.error('Complete token error:', error);
     res.status(500).json({ message: 'Server error completing token.' });
@@ -162,6 +170,10 @@ router.patch('/:tokenId/cancel', async (req, res) => {
     await token.save();
 
     res.json({ token });
+    
+    // Emit socket event
+    req.app.get('io').to(token.queueId.toString()).emit('queue-updated');
+    req.app.get('io').emit('queues-updated');
   } catch (error) {
     console.error('Cancel token error:', error);
     res.status(500).json({ message: 'Server error cancelling token.' });

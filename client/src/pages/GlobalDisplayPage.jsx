@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import api from '../lib/api';
+import { socket } from '../lib/socket';
 
 const TRANSLATIONS = {
   en: {
@@ -48,11 +49,11 @@ export default function GlobalDisplayPage() {
     }
   };
 
-  // Initial fetch + polling every 10s
   useEffect(() => {
     fetchData();
-    const interval = setInterval(fetchData, 10000);
-    return () => clearInterval(interval);
+    
+    socket.on('queues-updated', fetchData);
+    return () => socket.off('queues-updated', fetchData);
   }, []);
 
   // Live clock
@@ -140,7 +141,7 @@ export default function GlobalDisplayPage() {
             >
               dashboard
             </span>
-            <h1 className="text-5xl font-bold text-white tracking-tight">
+            <h1 className="text-[clamp(2rem,5vw,3rem)] font-bold text-white tracking-tight">
               {TRANSLATIONS[lang].clinicDisplay}
             </h1>
           </div>
@@ -159,7 +160,7 @@ export default function GlobalDisplayPage() {
                 className={`px-4 py-2 text-lg font-bold rounded-lg transition-colors cursor-pointer ${lang === 'te' ? 'bg-white text-black' : 'text-on-surface-variant hover:text-white'}`}
               >TE</button>
             </div>
-            <div className="text-6xl font-black text-white tracking-tighter">
+            <div className="text-[clamp(2rem,6vw,4rem)] font-black text-white tracking-tighter">
               {clock}
             </div>
           </div>
@@ -172,28 +173,28 @@ export default function GlobalDisplayPage() {
               <div key={queue._id} className="glass-panel rounded-[32px] border border-white/20 p-8 flex flex-col relative overflow-hidden group shadow-2xl">
                 <div className="absolute top-0 left-0 w-full h-2 bg-white/20" />
                 
-                <h2 className="text-2xl xl:text-3xl font-bold text-white mb-2 tracking-tight truncate border-b border-white/10 pb-4 shrink-0">
+                <h2 className="text-[clamp(1.5rem,3vw,2rem)] font-bold text-white mb-2 tracking-tight truncate border-b border-white/10 pb-4 shrink-0">
                   {queue.name}
                 </h2>
                 
                 <div className="flex-1 flex flex-col items-center justify-center text-center mt-2 min-h-0">
-                  <h3 className="text-lg xl:text-xl font-bold text-on-surface-variant uppercase tracking-[0.2em] mb-2 xl:mb-4 shrink-0">
+                  <h3 className="text-[clamp(1rem,2vw,1.25rem)] font-bold text-on-surface-variant uppercase tracking-[0.2em] mb-2 xl:mb-4 shrink-0">
                     {TRANSLATIONS[lang].nowServing}
                   </h3>
                   
                   {queue.inServiceToken ? (
                     <div className="flex-1 flex flex-col items-center justify-center min-h-0 w-full overflow-hidden">
-                      <div className="text-6xl md:text-7xl xl:text-[90px] font-black text-white leading-none tracking-tighter mb-2 drop-shadow-lg shrink-0">
+                      <div className="text-[clamp(3rem,8vw,90px)] font-black text-white leading-none tracking-tighter mb-2 drop-shadow-lg shrink-0">
                         #{queue.inServiceToken.tokenNumber}
                       </div>
-                      <div className="text-2xl md:text-3xl xl:text-[40px] font-bold text-white tracking-tight truncate w-full px-4 shrink-0">
+                      <div className="text-[clamp(1.5rem,4vw,40px)] font-bold text-white tracking-tight truncate w-full px-4 shrink-0">
                         {queue.inServiceToken.personName}
                       </div>
                     </div>
                   ) : (
                     <div className="flex-1 flex flex-col items-center justify-center min-h-0">
-                      <div className="text-6xl md:text-7xl xl:text-[90px] font-black text-white/10 leading-none tracking-tighter mb-4 shrink-0">—</div>
-                      <div className="text-lg md:text-xl xl:text-2xl font-medium text-white/40 shrink-0">{TRANSLATIONS[lang].waiting}</div>
+                      <div className="text-[clamp(3rem,8vw,90px)] font-black text-white/10 leading-none tracking-tighter mb-4 shrink-0">—</div>
+                      <div className="text-[clamp(1rem,2vw,1.5rem)] font-medium text-white/40 shrink-0">{TRANSLATIONS[lang].waiting}</div>
                     </div>
                   )}
                 </div>

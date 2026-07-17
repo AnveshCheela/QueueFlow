@@ -67,6 +67,9 @@ router.post('/', async (req, res) => {
     });
 
     res.status(201).json({ queue: { ...queue.toObject(), waitingCount: 0 } });
+    
+    // Emit socket event
+    req.app.get('io').emit('queues-updated');
   } catch (error) {
     console.error('Create queue error:', error);
     res.status(500).json({ message: 'Server error creating queue.' });
@@ -235,6 +238,9 @@ router.delete('/:id', async (req, res) => {
     await Queue.deleteOne({ _id: queue._id });
 
     res.json({ message: 'Queue and all tokens deleted successfully.' });
+    
+    // Emit socket event
+    req.app.get('io').emit('queues-updated');
   } catch (error) {
     console.error('Delete queue error:', error);
     res.status(500).json({ message: 'Server error deleting queue.' });
@@ -284,6 +290,10 @@ router.post('/:id/tokens', async (req, res) => {
     await queue.save();
 
     res.status(201).json({ token });
+    
+    // Emit socket event
+    req.app.get('io').to(queue._id.toString()).emit('queue-updated');
+    req.app.get('io').emit('queues-updated');
   } catch (error) {
     console.error('Add token error:', error);
     res.status(500).json({ message: 'Server error adding token.' });
@@ -334,6 +344,10 @@ router.post('/:id/call-next', async (req, res) => {
     await nextToken.save();
 
     res.json({ token: nextToken });
+    
+    // Emit socket event
+    req.app.get('io').to(queue._id.toString()).emit('queue-updated');
+    req.app.get('io').emit('queues-updated');
   } catch (error) {
     console.error('Call next error:', error);
     res.status(500).json({ message: 'Server error calling next token.' });

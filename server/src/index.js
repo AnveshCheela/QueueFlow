@@ -1,4 +1,6 @@
 import express from 'express';
+import { createServer } from 'http';
+import { Server } from 'socket.io';
 import cors from 'cors';
 import dotenv from 'dotenv';
 import connectDB from './config/db.js';
@@ -13,6 +15,14 @@ import publicRoutes from './routes/public.js';
 dotenv.config();
 
 const app = express();
+const httpServer = createServer(app);
+const io = new Server(httpServer, {
+  cors: { origin: '*', methods: ['GET', 'POST', 'PATCH', 'DELETE'] }
+});
+
+// Make io accessible to our routes
+app.set('io', io);
+
 const PORT = process.env.PORT || 5000;
 
 // Middleware
@@ -42,7 +52,14 @@ app.use((err, req, res, _next) => {
 // Connect to MongoDB and start server
 const startServer = async () => {
   await connectDB();
-  app.listen(PORT, () => {
+  
+  io.on('connection', (socket) => {
+    socket.on('join-queue', (queueId) => {
+      if (queueId) socket.join(queueId);
+    });
+  });
+
+  httpServer.listen(PORT, () => {
     console.log(`QueueFlow server running on port ${PORT}`);
   });
 };

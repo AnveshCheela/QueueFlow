@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from 'react';
 import { useParams } from 'react-router-dom';
 import api from '../lib/api';
 import { QRCodeCanvas } from 'qrcode.react';
+import { socket } from '../lib/socket';
 
 const TRANSLATIONS = {
   en: {
@@ -60,11 +61,15 @@ export default function PublicDisplayPage() {
     }
   };
 
-  // Initial fetch + polling every 10s
   useEffect(() => {
     fetchData();
-    const interval = setInterval(fetchData, 10000);
-    return () => clearInterval(interval);
+    
+    socket.emit('join-queue', queueId);
+    socket.on('queue-updated', fetchData);
+    
+    return () => {
+      socket.off('queue-updated', fetchData);
+    };
   }, [queueId]);
 
   // Live clock
@@ -188,16 +193,16 @@ export default function PublicDisplayPage() {
             {/* Top gradient bar */}
             <div className="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-transparent via-white to-transparent opacity-30" />
 
-            <h2 className="text-xl md:text-2xl font-semibold text-on-surface-variant uppercase tracking-[0.2em] mb-2">
+            <h2 className="text-[clamp(1.25rem,3vw,2rem)] font-semibold text-on-surface-variant uppercase tracking-[0.2em] mb-2">
               {TRANSLATIONS[lang].nowServing}
             </h2>
 
             {inServiceToken ? (
               <>
-                <div className="text-[72px] md:text-[90px] font-black text-white leading-none tracking-tighter mb-2">
+                <div className="text-[clamp(4rem,12vw,120px)] font-black text-white leading-none tracking-tighter mb-2">
                   #{inServiceToken.tokenNumber || '?'}
                 </div>
-                <div className="text-[32px] md:text-[40px] font-bold text-white tracking-tight text-center px-4 leading-tight mb-4 md:mb-6">
+                <div className="text-[clamp(2rem,5vw,60px)] font-bold text-white tracking-tight text-center px-4 leading-tight mb-4 md:mb-6">
                   {inServiceToken.personName || ''}
                 </div>
                 <div className="bg-white text-black px-6 py-2 rounded-full text-base md:text-lg font-bold flex items-center gap-2">
@@ -207,10 +212,10 @@ export default function PublicDisplayPage() {
               </>
             ) : (
               <>
-                <div className="text-[72px] md:text-[90px] font-black text-on-surface-variant/30 leading-none tracking-tighter mb-4">
+                <div className="text-[clamp(4rem,12vw,120px)] font-black text-on-surface-variant/30 leading-none tracking-tighter mb-4">
                   —
                 </div>
-                <div className="text-lg md:text-xl text-on-surface-variant/60">
+                <div className="text-[clamp(1.125rem,2.5vw,1.5rem)] text-on-surface-variant/60">
                   {TRANSLATIONS[lang].waiting}
                 </div>
               </>
@@ -240,10 +245,10 @@ export default function PublicDisplayPage() {
                       idx === upNext.length - 1 ? 'opacity-80' : ''
                     }`}
                   >
-                    <span className="text-3xl font-bold text-white mb-1">
+                    <span className="text-[clamp(1.5rem,3vw,2.5rem)] font-bold text-white mb-1">
                       #{token.tokenNumber || '?'}
                     </span>
-                    <span className="text-xl text-on-surface-variant font-medium truncate">
+                    <span className="text-[clamp(1rem,2vw,1.5rem)] text-on-surface-variant font-medium truncate">
                       {token.personName || ''}
                     </span>
                   </div>
@@ -270,7 +275,7 @@ export default function PublicDisplayPage() {
                 </div>
               </div>
             </div>
-            <div className="text-4xl font-bold text-white tracking-tighter">
+            <div className="text-[clamp(1.5rem,4vw,3rem)] font-bold text-white tracking-tighter">
               {clock}
             </div>
           </div>
