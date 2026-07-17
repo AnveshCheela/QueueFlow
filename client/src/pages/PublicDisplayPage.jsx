@@ -140,12 +140,12 @@ export default function PublicDisplayPage() {
   }
 
   return (
-    <div className="w-screen h-screen flex flex-col text-on-surface relative overflow-hidden" style={{ fontFamily: "'Inter', sans-serif" }}>
+    <div className="w-full min-h-screen flex flex-col text-on-surface relative overflow-x-hidden" style={{ fontFamily: "'Inter', sans-serif" }}>
       {/* CSS-only animated background */}
-      <div className="absolute inset-0 bg-background -z-10" />
+      <div className="fixed inset-0 bg-background -z-10" />
 
       {/* Main Container */}
-      <div className="flex flex-col h-screen w-full max-w-[1920px] mx-auto p-4 md:p-8 relative z-10">
+      <div className="flex flex-col min-h-screen w-full max-w-[1920px] mx-auto p-4 md:p-8 relative z-10">
         {/* Header */}
         <header className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-4 shrink-0">
           <div className="flex items-center gap-3">
@@ -183,8 +183,8 @@ export default function PublicDisplayPage() {
         </header>
 
         {/* Center: Now Serving */}
-        <main className="flex-1 flex items-center justify-center min-h-0 mb-4 relative">
-          <div className="glow-ring rounded-[30px] glass-panel w-full max-w-4xl flex flex-col items-center justify-center text-center relative overflow-hidden py-4 px-6 md:py-8">
+        <main className="flex-1 flex items-center justify-center my-6 relative min-h-[300px] shrink-0">
+          <div className="glow-ring rounded-[30px] glass-panel w-full max-w-4xl flex flex-col items-center justify-center text-center relative overflow-hidden py-8 px-6 md:py-12">
             {/* Top gradient bar */}
             <div className="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-transparent via-white to-transparent opacity-30" />
 
