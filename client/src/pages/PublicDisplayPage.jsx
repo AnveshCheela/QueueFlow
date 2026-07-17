@@ -153,14 +153,14 @@ export default function PublicDisplayPage() {
   }
 
   return (
-    <div className="w-full min-h-screen flex flex-col text-on-surface relative overflow-x-hidden" style={{ fontFamily: "'Inter', sans-serif" }}>
+    <div className="w-full h-screen flex flex-col text-on-surface relative overflow-hidden" style={{ fontFamily: "'Inter', sans-serif" }}>
       {/* CSS-only animated background */}
       <div className="fixed inset-0 bg-background -z-10" />
 
       {/* Main Container */}
-      <div className="flex flex-col min-h-screen w-full max-w-[1920px] mx-auto p-4 md:p-8 relative z-10">
+      <div className="flex flex-col h-full w-full max-w-[1920px] mx-auto p-4 md:p-6 relative z-10">
         {/* Header */}
-        <header className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-4 shrink-0">
+        <header className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-2 md:mb-4 shrink-0">
           <div className="flex items-center gap-3">
             <span
               className="material-symbols-outlined text-white"
@@ -196,21 +196,21 @@ export default function PublicDisplayPage() {
         </header>
 
         {/* Center: Now Serving */}
-        <main className="flex-1 flex items-center justify-center my-6 relative min-h-[300px] shrink-0">
-          <div className="glow-ring rounded-[30px] glass-panel w-full max-w-4xl flex flex-col items-center justify-center text-center relative overflow-hidden py-8 px-6 md:py-12">
+        <main className="flex-1 flex items-center justify-center my-2 md:my-4 relative min-h-0">
+          <div className="glow-ring rounded-[30px] glass-panel w-full max-w-4xl flex flex-col items-center justify-center text-center relative overflow-hidden py-6 px-4 md:py-10">
             {/* Top gradient bar */}
             <div className="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-transparent via-white to-transparent opacity-30" />
 
-            <h2 className="text-[clamp(1.25rem,3vw,2rem)] font-semibold text-on-surface-variant uppercase tracking-[0.2em] mb-2">
+            <h2 className="text-[clamp(1rem,3vh,2rem)] font-semibold text-on-surface-variant uppercase tracking-[0.2em] mb-1 md:mb-2 shrink-0">
               {TRANSLATIONS[lang].nowServing}
             </h2>
 
             {inServiceToken ? (
               <>
-                <div className="text-[clamp(4rem,12vw,120px)] font-black text-white leading-none tracking-tighter mb-2">
+                <div className="text-[clamp(3rem,15vh,120px)] font-black text-white leading-none tracking-tighter mb-1 md:mb-2 shrink-0">
                   #{inServiceToken.tokenNumber || '?'}
                 </div>
-                <div className="text-[clamp(2rem,5vw,60px)] font-bold text-white tracking-tight text-center px-4 leading-tight mb-4 md:mb-6">
+                <div className="text-[clamp(1.5rem,6vh,60px)] font-bold text-white tracking-tight text-center px-4 leading-tight mb-3 md:mb-5 shrink-0">
                   {inServiceToken.personName || ''}
                 </div>
                 <div className="bg-white text-black px-6 py-2 rounded-full text-base md:text-lg font-bold flex items-center gap-2">
@@ -220,10 +220,10 @@ export default function PublicDisplayPage() {
               </>
             ) : (
               <>
-                <div className="text-[clamp(4rem,12vw,120px)] font-black text-on-surface-variant/30 leading-none tracking-tighter mb-4">
+                <div className="text-[clamp(3rem,15vh,120px)] font-black text-on-surface-variant/30 leading-none tracking-tighter mb-2 md:mb-4 shrink-0">
                   —
                 </div>
-                <div className="text-[clamp(1.125rem,2.5vw,1.5rem)] text-on-surface-variant/60">
+                <div className="text-[clamp(1rem,3vh,1.5rem)] text-on-surface-variant/60 shrink-0">
                   {TRANSLATIONS[lang].waiting}
                 </div>
               </>
@@ -232,13 +232,13 @@ export default function PublicDisplayPage() {
         </main>
 
         {/* Bottom: Up Next & Footer */}
-        <footer className="shrink-0 flex flex-col gap-4">
+        <footer className="shrink-0 flex flex-col gap-3">
           {/* Up Next Grid */}
-          <div className="glass-panel rounded-2xl p-4 border-t border-white/10 shadow-2xl">
-            <h3 className="text-lg font-semibold text-on-surface-variant mb-3 uppercase tracking-wider border-b border-outline-variant/30 pb-2">
+          <div className="glass-panel rounded-2xl p-3 md:p-4 border-t border-white/10 shadow-2xl">
+            <h3 className="text-base md:text-lg font-semibold text-on-surface-variant mb-2 uppercase tracking-wider border-b border-outline-variant/30 pb-1">
               {TRANSLATIONS[lang].upNext}
             </h3>
-            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3 md:gap-4">
               {upNext.length === 0 ? (
                 <div className="col-span-5 text-center text-on-surface-variant/60 text-lg py-2">
                   {TRANSLATIONS[lang].noPatients}
@@ -247,16 +247,16 @@ export default function PublicDisplayPage() {
                 upNext.map((token, idx) => (
                   <div
                     key={token._id}
-                    className={`bg-surface-container-high rounded-xl p-4 border-l-4 ${
+                    className={`bg-surface-container-high rounded-xl p-3 border-l-4 ${
                       idx === 0 ? 'border-l-white' : 'border-l-outline'
                     } shadow-sm flex flex-col justify-center transition-all hover:bg-surface-variant ${
                       idx === upNext.length - 1 ? 'opacity-80' : ''
                     }`}
                   >
-                    <span className="text-[clamp(1.5rem,3vw,2.5rem)] font-bold text-white mb-1">
+                    <span className="text-[clamp(1.25rem,4vh,2.5rem)] font-bold text-white mb-1">
                       #{token.tokenNumber || '?'}
                     </span>
-                    <span className="text-[clamp(1rem,2vw,1.5rem)] text-on-surface-variant font-medium truncate">
+                    <span className="text-[clamp(0.875rem,2.5vh,1.5rem)] text-on-surface-variant font-medium truncate">
                       {token.personName || ''}
                     </span>
                   </div>
@@ -266,24 +266,24 @@ export default function PublicDisplayPage() {
           </div>
 
           {/* Footer Utilities */}
-          <div className="flex flex-col md:flex-row justify-between items-center md:items-end mt-1 gap-4 md:gap-0">
-            <div className="flex items-center gap-4">
-              <div className="bg-white p-2 rounded-lg">
+          <div className="flex flex-col md:flex-row justify-between items-center md:items-end mt-1 gap-2 md:gap-0">
+            <div className="flex items-center gap-3">
+              <div className="bg-white p-1.5 rounded-lg">
                 <QRCodeCanvas 
                   value={`${window.location.origin}/status/${queueId}`}
-                  size={64}
+                  size={56}
                   level="M"
                 />
               </div>
               <div className="flex flex-col text-on-surface-variant">
-                <span className="text-white font-bold mb-1 tracking-wider text-sm">SCAN FOR LIVE STATUS</span>
-                <div className="flex items-center gap-2">
-                  <span className="material-symbols-outlined" style={{ fontSize: '1.25rem' }}>info</span>
-                  <span className="text-sm">{TRANSLATIONS[lang].info}</span>
+                <span className="text-white font-bold mb-0.5 tracking-wider text-xs md:text-sm">SCAN FOR LIVE STATUS</span>
+                <div className="flex items-center gap-1.5">
+                  <span className="material-symbols-outlined" style={{ fontSize: '1.125rem' }}>info</span>
+                  <span className="text-xs md:text-sm">{TRANSLATIONS[lang].info}</span>
                 </div>
               </div>
             </div>
-            <div className="text-[clamp(1.5rem,4vw,3rem)] font-bold text-white tracking-tighter">
+            <div className="text-[clamp(1.5rem,5vh,3rem)] font-bold text-white tracking-tighter">
               {clock}
             </div>
           </div>
