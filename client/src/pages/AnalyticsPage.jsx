@@ -76,6 +76,36 @@ export default function AnalyticsPage() {
     fetchAnalytics();
   }, [id]);
 
+  const handleExportCSV = async () => {
+    try {
+      const { data } = await api.get(`/queues/${id}`);
+      const q = data.queue || data;
+      const tks = q.tokens || [];
+      
+      let csvContent = "Token Number,Patient Name,Status,Created At,Completed At\n";
+      tks.forEach(t => {
+        const tokenNum = t.tokenNumber || '';
+        const name = `"${(t.personName || '').replace(/"/g, '""')}"`;
+        const status = t.status || '';
+        const createdAt = t.createdAt ? new Date(t.createdAt).toLocaleString() : '';
+        const completedAt = t.completedAt ? new Date(t.completedAt).toLocaleString() : '';
+        csvContent += `${tokenNum},${name},${status},"${createdAt}","${completedAt}"\n`;
+      });
+      
+      const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.setAttribute("href", url);
+      link.setAttribute("download", `queue_${id}_report.csv`);
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      toast.success('Report downloaded');
+    } catch (err) {
+      toast.error('Failed to export report');
+    }
+  };
+
   const trendData = [
     { value: '+2', direction: 'up' },
     { value: '+14%', direction: 'up' },
@@ -103,6 +133,13 @@ export default function AnalyticsPage() {
             <h1 className="text-4xl font-bold text-on-surface tracking-tight mt-2">Dashboard</h1>
             <p className="text-base text-on-surface-variant mt-1">Real-time clinic flow and patient throughput metrics.</p>
           </div>
+          <button
+            onClick={handleExportCSV}
+            className="bg-white text-black hover:bg-gray-200 px-4 py-2 rounded-lg text-sm font-semibold flex items-center gap-2 transition-colors cursor-pointer"
+          >
+            <span className="material-symbols-outlined text-[18px]">download</span>
+            Export CSV
+          </button>
         </div>
 
         {/* Summary Stat Cards */}

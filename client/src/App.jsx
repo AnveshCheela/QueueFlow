@@ -11,6 +11,7 @@ import ProfilePage from './pages/ProfilePage';
 import AboutPage from './pages/AboutPage';
 import ContactPage from './pages/ContactPage';
 import PrivacyPolicyPage from './pages/PrivacyPolicyPage';
+import MobileStatusPage from './pages/MobileStatusPage';
 
 export default function App() {
   return (
@@ -51,6 +52,7 @@ export default function App() {
             }
           />
           <Route path="/display/:queueId" element={<PublicDisplayPage />} />
+          <Route path="/status/:queueId" element={<MobileStatusPage />} />
           <Route path="/about" element={<AboutPage />} />
           <Route path="/contact" element={<ContactPage />} />
           <Route path="/privacy" element={<PrivacyPolicyPage />} />
