@@ -37,9 +37,39 @@ export default function MobileStatusPage() {
 
   const inServiceToken = tokens.find((t) => t.status === 'in-service');
   const waitingTokens = tokens.filter((t) => t.status === 'waiting');
+  const completedTokens = tokens.filter((t) => t.status === 'completed');
   
-  // Calculate estimated wait time (assume 5 mins per person)
-  const estWaitTime = waitingTokens.length * 5;
+  // AI Predictor Algorithm
+  let avgServiceMs = 5 * 60000; // default 5 mins
+  if (completedTokens.length > 0) {
+    let totalTime = 0;
+    let valid = 0;
+    completedTokens.forEach(t => {
+      if (t.calledAt && t.completedAt) {
+        const time = new Date(t.completedAt).getTime() - new Date(t.calledAt).getTime();
+        if (time > 0 && time < 3600000) { // Only count if reasonable (under 1hr)
+          totalTime += time;
+          valid++;
+        }
+      }
+    });
+    if (valid > 0) {
+      avgServiceMs = totalTime / valid;
+    }
+  }
+  
+  const estWaitTime = Math.round((waitingTokens.length * avgServiceMs) / 60000);
+
+  const formatEstimatedTime = (index) => {
+    // Current time + (position * avgServiceTime)
+    const d = new Date(Date.now() + (index + 1) * avgServiceMs);
+    let hours = d.getHours();
+    let mins = d.getMinutes();
+    const ampm = hours >= 12 ? 'PM' : 'AM';
+    hours = hours % 12 || 12;
+    mins = mins < 10 ? '0'+mins : mins;
+    return `${hours}:${mins} ${ampm}`;
+  };
 
   return (
     <div className="min-h-screen bg-background text-on-surface flex flex-col antialiased font-sans">
@@ -92,7 +122,10 @@ export default function MobileStatusPage() {
                     <span className="text-lg font-bold text-white w-8">#{token.tokenNumber}</span>
                     <span className="text-base text-on-surface-variant">{token.personName}</span>
                   </div>
-                  {idx === 0 && <span className="text-xs font-bold bg-white text-black px-2 py-1 rounded-md">NEXT</span>}
+                  <div className="text-right flex flex-col items-end">
+                    <div className="text-sm font-medium text-white">{formatEstimatedTime(idx)}</div>
+                    {idx === 0 && <span className="text-[10px] font-bold bg-white text-black px-2 py-0.5 rounded-md mt-1">NEXT</span>}
+                  </div>
                 </div>
               ))
             )}
