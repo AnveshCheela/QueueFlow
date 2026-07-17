@@ -89,22 +89,31 @@ export default function GlobalDisplayPage() {
     queues.forEach(queue => {
       if (queue.inServiceToken) {
         const token = queue.inServiceToken;
-        const signature = `${token._id}-${lang}`;
+        // Signature based only on token ID so it only speaks once per patient
+        const signature = `${token._id}`;
         
         if (spokenTokensRef.current[queue._id] !== signature) {
-          // Speak!
+          // Stop any currently playing audio
           window.speechSynthesis.cancel();
-          const msg = new SpeechSynthesisUtterance();
-          msg.text = TRANSLATIONS[lang].callVoice(queue.name, token.tokenNumber || '', token.personName || '');
-          msg.lang = TRANSLATIONS[lang].langCode;
-          msg.rate = 0.9;
-          window.speechSynthesis.speak(msg);
+          
+          const speakInLang = (l) => {
+            const msg = new SpeechSynthesisUtterance();
+            msg.text = TRANSLATIONS[l].callVoice(queue.name, token.tokenNumber || '', token.personName || '');
+            msg.lang = TRANSLATIONS[l].langCode;
+            msg.rate = 0.9;
+            window.speechSynthesis.speak(msg);
+          };
+
+          // Queue all three languages to play sequentially
+          speakInLang('en');
+          speakInLang('hi');
+          speakInLang('te');
           
           spokenTokensRef.current[queue._id] = signature;
         }
       }
     });
-  }, [queues, lang]);
+  }, [queues]); // Removed 'lang' from dependencies so it doesn't repeat every 15 seconds
 
   if (loading) {
     return (

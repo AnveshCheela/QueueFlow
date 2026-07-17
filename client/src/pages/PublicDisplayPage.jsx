@@ -95,25 +95,42 @@ export default function PublicDisplayPage() {
     return () => clearInterval(interval);
   }, []);
 
+  // Text-to-Speech Voice Announcements
+  useEffect(() => {
+    if (!tokens) return;
+
+    const inServiceToken = tokens.find((t) => t.status === 'in-service');
+
+    // We only announce when there's an in-service token
+    if (inServiceToken) {
+      // Signature based only on token ID so it only speaks once per patient
+      const signature = `${inServiceToken._id}`;
+      
+      if (spokenTokenRef.current !== signature) {
+        // Stop any currently playing audio
+        window.speechSynthesis.cancel(); 
+        
+        const speakInLang = (l) => {
+          const msg = new SpeechSynthesisUtterance();
+          msg.text = TRANSLATIONS[l].callVoice(inServiceToken.tokenNumber || '', inServiceToken.personName || '');
+          msg.lang = TRANSLATIONS[l].langCode;
+          msg.rate = 0.9;
+          window.speechSynthesis.speak(msg);
+        };
+
+        // Queue all three languages to play sequentially
+        speakInLang('en');
+        speakInLang('hi');
+        speakInLang('te');
+        
+        spokenTokenRef.current = signature;
+      }
+    }
+  }, [tokens]);
+
   const inServiceToken = tokens.find((t) => t.status === 'in-service');
   const waitingTokens = tokens.filter((t) => t.status === 'waiting');
   const upNext = waitingTokens.slice(0, 5);
-
-  // Text-to-Speech Voice Announcement
-  useEffect(() => {
-    if (inServiceToken) {
-      const signature = `${inServiceToken._id}-${lang}`;
-      if (signature !== lastSpoken) {
-        window.speechSynthesis.cancel(); // Cancel any ongoing speech
-        const msg = new SpeechSynthesisUtterance();
-        msg.text = TRANSLATIONS[lang].callVoice(inServiceToken.tokenNumber || '', inServiceToken.personName || '');
-        msg.lang = TRANSLATIONS[lang].langCode;
-        msg.rate = 0.9;
-        window.speechSynthesis.speak(msg);
-        setLastSpoken(signature);
-      }
-    }
-  }, [inServiceToken, lastSpoken, lang]);
 
   if (loading) {
     return (
