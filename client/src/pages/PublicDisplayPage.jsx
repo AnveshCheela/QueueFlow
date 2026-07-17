@@ -50,20 +50,12 @@ export default function PublicDisplayPage() {
   // Fetch queue data
   const fetchData = async () => {
     try {
-      const { data } = await api.get(`/queues/${queueId}/public`);
+      const { data } = await api.get(`/public/queues/${queueId}`);
       const q = data.queue || data;
       setQueue(q);
       setTokens(data.tokens || q.tokens || []);
     } catch {
-      // Try without /public suffix
-      try {
-        const { data } = await api.get(`/queues/${queueId}`);
-        const q = data.queue || data;
-        setQueue(q);
-        setTokens(data.tokens || q.tokens || []);
-      } catch {
-        // silently fail
-      }
+      // silently fail
     } finally {
       setLoading(false);
     }

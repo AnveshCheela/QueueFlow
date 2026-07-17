@@ -10,19 +10,12 @@ export default function MobileStatusPage() {
 
   const fetchData = async () => {
     try {
-      const { data } = await api.get(`/queues/${queueId}/public`);
+      const { data } = await api.get(`/public/queues/${queueId}`);
       const q = data.queue || data;
       setQueue(q);
       setTokens(data.tokens || q.tokens || []);
     } catch {
-      try {
-        const { data } = await api.get(`/queues/${queueId}`);
-        const q = data.queue || data;
-        setQueue(q);
-        setTokens(data.tokens || q.tokens || []);
-      } catch {
-        // silently fail
-      }
+      // silently fail
     } finally {
       setLoading(false);
     }

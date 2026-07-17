@@ -7,6 +7,7 @@ import authRoutes from './routes/auth.js';
 import queueRoutes from './routes/queues.js';
 import tokenRoutes from './routes/tokens.js';
 import analyticsRoutes from './routes/analytics.js';
+import publicRoutes from './routes/public.js';
 
 // Load environment variables
 dotenv.config();
@@ -23,6 +24,7 @@ app.use('/api/auth', authRoutes);
 app.use('/api/queues', queueRoutes);
 app.use('/api/tokens', tokenRoutes);
 app.use('/api/analytics', analyticsRoutes);
+app.use('/api/public', publicRoutes);
 
 // Health check
 app.get('/api/health', (req, res) => {
