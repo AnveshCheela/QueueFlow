@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>QueueFlow Analytics Dashboard</title>
+<!-- Fonts & Icons -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Tailwind Configuration -->
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "on-tertiary-fixed": "#001f28",
+                    "primary-fixed": "#89f5e7",
+                    "on-secondary": "#233144",
+                    "on-secondary-fixed": "#0d1c2e",
+                    "on-primary-fixed-variant": "#005049",
+                    "tertiary-fixed-dim": "#6cd3f7",
+                    "secondary-container": "#3c4a5e",
+                    "inverse-primary": "#006a61",
+                    "surface-tint": "#6bd8cb",
+                    "outline-variant": "#3d4947",
+                    "outline": "#879391",
+                    "surface-dim": "#0f1413",
+                    "secondary-fixed": "#d5e3fc",
+                    "tertiary-container": "#269dbe",
+                    "secondary": "#b9c7df",
+                    "on-secondary-fixed-variant": "#3a485b",
+                    "background": "#0f1413",
+                    "surface-bright": "#353a39",
+                    "on-primary": "#003732",
+                    "surface-container-highest": "#303635",
+                    "tertiary": "#6cd3f7",
+                    "error-container": "#93000a",
+                    "secondary-fixed-dim": "#b9c7df",
+                    "on-tertiary-fixed-variant": "#004e61",
+                    "on-error": "#690005",
+                    "primary-fixed-dim": "#6bd8cb",
+                    "surface-container-high": "#262b2a",
+                    "primary-container": "#29a195",
+                    "on-primary-fixed": "#00201d",
+                    "on-background": "#dee4e1",
+                    "on-tertiary": "#003543",
+                    "surface-container-lowest": "#0a0f0e",
+                    "surface-container": "#1b2120",
+                    "surface-container-low": "#171d1c",
+                    "primary": "#6bd8cb",
+                    "error": "#ffb4ab",
+                    "surface": "#0f1413",
+                    "on-error-container": "#ffdad6",
+                    "tertiary-fixed": "#b7eaff",
+                    "on-surface": "#dee4e1",
+                    "surface-variant": "#303635",
+                    "inverse-surface": "#dee4e1",
+                    "on-surface-variant": "#bcc9c6",
+                    "inverse-on-surface": "#2c3130",
+                    "on-primary-container": "#00302b",
+                    "on-secondary-container": "#abb9d1",
+                    "on-tertiary-container": "#002e3b"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "xl": "48px",
+                    "sm": "8px",
+                    "gutter": "20px",
+                    "xs": "4px",
+                    "container-max": "1440px",
+                    "md": "16px",
+                    "lg": "24px",
+                    "base": "4px"
+            },
+            "fontFamily": {
+                    "headline-lg": ["Inter"],
+                    "mono-stats": ["Inter"],
+                    "body-sm": ["Inter"],
+                    "headline-sm": ["Inter"],
+                    "label-md": ["Inter"],
+                    "display-lg": ["Inter"],
+                    "body-lg": ["Inter"],
+                    "body-md": ["Inter"],
+                    "headline-md": ["Inter"]
+            },
+            "fontSize": {
+                    "headline-lg": ["32px", {"lineHeight": "1.2", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                    "mono-stats": ["14px", {"lineHeight": "1", "letterSpacing": "0.02em", "fontWeight": "500"}],
+                    "body-sm": ["14px", {"lineHeight": "1.5", "fontWeight": "400"}],
+                    "headline-sm": ["20px", {"lineHeight": "1.4", "fontWeight": "600"}],
+                    "label-md": ["12px", {"lineHeight": "1", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                    "display-lg": ["48px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "body-lg": ["18px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                    "body-md": ["16px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                    "headline-md": ["24px", {"lineHeight": "1.3", "fontWeight": "600"}]
+            }
+          }
+        }
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        
+        /* Custom scrollbar for a cleaner dashboard look */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: rgba(15, 20, 19, 0.5);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: rgba(61, 73, 71, 0.8);
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: rgba(135, 147, 145, 0.8);
+        }
+    </style>
+</head>
+<body class="bg-background text-on-surface font-body-md min-h-screen flex flex-col antialiased">
+<!-- TopNavBar -->
+<header class="docked full-width top-0 sticky z-50 bg-surface/60 dark:bg-surface/60 backdrop-blur-xl border-b border-outline-variant/30 shadow-sm">
+<div class="flex justify-between items-center w-full px-lg py-sm max-w-container-max mx-auto">
+<!-- Brand Logo -->
+<div class="flex items-center gap-sm cursor-pointer active:opacity-80 transition-all">
+<span class="material-symbols-outlined text-primary text-headline-lg font-headline-lg">hub</span>
+<span class="font-headline-lg text-headline-lg font-bold text-primary dark:text-primary">QueueFlow</span>
+</div>
+<!-- Actions -->
+<div class="flex items-center gap-md">
+<!-- Trailing Icons -->
+<button class="text-primary dark:text-primary hover:text-primary-fixed-dim transition-colors cursor-pointer active:opacity-80 flex items-center justify-center w-10 h-10 rounded-full hover:bg-surface-variant/50">
+<span class="material-symbols-outlined font-headline-md text-headline-md">notifications</span>
+</button>
+<button class="text-primary dark:text-primary hover:text-primary-fixed-dim transition-colors cursor-pointer active:opacity-80 flex items-center justify-center w-10 h-10 rounded-full hover:bg-surface-variant/50">
+<span class="material-symbols-outlined font-headline-md text-headline-md">settings</span>
+</button>
+<!-- Separator -->
+<div class="w-px h-6 bg-outline-variant/50 mx-xs"></div>
+<!-- Trailing Primary Action -->
+<button class="font-label-md text-label-md text-on-surface-variant hover:text-primary transition-colors cursor-pointer active:opacity-80 flex items-center gap-xs px-sm py-xs rounded-md hover:bg-surface-variant/30">
+                    Logout
+                    <span class="material-symbols-outlined text-[18px]">logout</span>
+</button>
+<!-- Profile Image Placeholder -->
+<div class="w-8 h-8 rounded-full bg-surface-variant border border-outline-variant/50 overflow-hidden ml-xs cursor-pointer hover:border-primary transition-colors">
+<img alt="User avatar" class="w-full h-full object-cover" data-alt="A professional medical administrator avatar, headshot style, clean lighting, neutral background, photorealistic" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCnPULzTzwGDSBKQl_SK9CVwkoFmQsC5EYddG_M_QgG0kDSugszCIkC5aUF_SWcXf01oxFIPPnkMhtnsAkMPmClCMZSpTlzFryAo0BynNoMgtA7Tl9Uv6QHaV25fAJg-qoxBo4HTGEy-aZPWN98WK12j_Tdh0F9oDTdjhJi7j4yluLKuLaAEpMR1gKN-F5fQeo7rWnrc_UgEDEMQh50VLesCCnwC0ASNkjSLqiryQoIYUwYCVGY5gexog"/>
+</div>
+</div>
+</div>
+</header>
+<!-- Main Content -->
+<main class="flex-grow w-full max-w-container-max mx-auto px-lg py-lg md:py-xl flex flex-col gap-lg md:gap-xl">
+<!-- Page Header -->
+<div class="flex justify-between items-end mb-sm">
+<div>
+<h1 class="font-headline-lg text-headline-lg text-on-surface mb-xs">Operations Overview</h1>
+<p class="font-body-md text-body-md text-on-surface-variant">Real-time clinic flow and patient throughput metrics.</p>
+</div>
+<div class="hidden sm:flex items-center gap-sm bg-surface-variant/40 rounded-lg p-xs border border-outline-variant/30">
+<button class="px-sm py-xs font-label-md text-label-md rounded bg-surface-variant text-on-surface shadow-sm">Today</button>
+<button class="px-sm py-xs font-label-md text-label-md rounded text-on-surface-variant hover:text-on-surface transition-colors">Week</button>
+<button class="px-sm py-xs font-label-md text-label-md rounded text-on-surface-variant hover:text-on-surface transition-colors">Month</button>
+</div>
+</div>
+<!-- Top Section: Summary Stat Cards -->
+<section class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-md md:gap-lg">
+<!-- Card 1: Waiting Now -->
+<div class="bg-surface-variant/60 backdrop-blur-md border border-outline-variant/50 rounded-xl p-md md:p-lg flex flex-col relative overflow-hidden group hover:border-outline transition-colors duration-300 shadow-sm">
+<div class="absolute left-0 top-0 bottom-0 w-1 bg-tertiary shadow-[0_0_8px_rgba(108,211,247,0.5)]"></div>
+<div class="flex justify-between items-start mb-md">
+<span class="font-label-md text-label-md text-on-surface-variant uppercase tracking-wider">Waiting Now</span>
+<div class="w-8 h-8 rounded-full bg-tertiary/10 flex items-center justify-center">
+<span class="material-symbols-outlined text-tertiary text-[20px]" data-weight="fill">person</span>
+</div>
+</div>
+<div class="flex items-baseline gap-sm">
+<span class="font-display-lg text-display-lg text-on-surface">12</span>
+<span class="font-mono-stats text-mono-stats text-tertiary flex items-center"><span class="material-symbols-outlined text-[14px] mr-1">arrow_upward</span> 2</span>
+</div>
+<div class="absolute top-0 right-0 left-0 h-[1px] bg-gradient-to-r from-transparent via-tertiary/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
+</div>
+<!-- Card 2: Served Today -->
+<div class="bg-surface-variant/60 backdrop-blur-md border border-outline-variant/50 rounded-xl p-md md:p-lg flex flex-col relative overflow-hidden group hover:border-outline transition-colors duration-300 shadow-sm">
+<div class="absolute left-0 top-0 bottom-0 w-1 bg-primary shadow-[0_0_8px_rgba(107,216,203,0.5)]"></div>
+<div class="flex justify-between items-start mb-md">
+<span class="font-label-md text-label-md text-on-surface-variant uppercase tracking-wider">Served Today</span>
+<div class="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center">
+<span class="material-symbols-outlined text-primary text-[20px]" data-weight="fill">check_circle</span>
+</div>
+</div>
+<div class="flex items-baseline gap-sm">
+<span class="font-display-lg text-display-lg text-on-surface">47</span>
+<span class="font-mono-stats text-mono-stats text-primary flex items-center"><span class="material-symbols-outlined text-[14px] mr-1">arrow_upward</span> 14%</span>
+</div>
+<div class="absolute top-0 right-0 left-0 h-[1px] bg-gradient-to-r from-transparent via-primary/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
+</div>
+<!-- Card 3: Avg Wait Time -->
+<div class="bg-surface-variant/60 backdrop-blur-md border border-outline-variant/50 rounded-xl p-md md:p-lg flex flex-col relative overflow-hidden group hover:border-outline transition-colors duration-300 shadow-sm">
+<div class="absolute left-0 top-0 bottom-0 w-1 bg-secondary shadow-[0_0_8px_rgba(185,199,223,0.5)]"></div>
+<div class="flex justify-between items-start mb-md">
+<span class="font-label-md text-label-md text-on-surface-variant uppercase tracking-wider">Avg Wait Time</span>
+<div class="w-8 h-8 rounded-full bg-secondary/10 flex items-center justify-center">
+<span class="material-symbols-outlined text-secondary text-[20px]" data-weight="fill">schedule</span>
+</div>
+</div>
+<div class="flex items-baseline gap-sm">
+<span class="font-display-lg text-display-lg text-on-surface">8 <span class="text-headline-md font-headline-md text-on-surface-variant">min</span></span>
+<span class="font-mono-stats text-mono-stats text-primary flex items-center"><span class="material-symbols-outlined text-[14px] mr-1">arrow_downward</span> 2m</span>
+</div>
+<div class="absolute top-0 right-0 left-0 h-[1px] bg-gradient-to-r from-transparent via-secondary/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
+</div>
+<!-- Card 4: Cancelled -->
+<div class="bg-surface-variant/60 backdrop-blur-md border border-outline-variant/50 rounded-xl p-md md:p-lg flex flex-col relative overflow-hidden group hover:border-outline transition-colors duration-300 shadow-sm">
+<div class="absolute left-0 top-0 bottom-0 w-1 bg-error shadow-[0_0_8px_rgba(255,180,171,0.3)]"></div>
+<div class="flex justify-between items-start mb-md">
+<span class="font-label-md text-label-md text-on-surface-variant uppercase tracking-wider">Cancelled</span>
+<div class="w-8 h-8 rounded-full bg-error/10 flex items-center justify-center">
+<span class="material-symbols-outlined text-error text-[20px]" data-weight="fill">cancel</span>
+</div>
+</div>
+<div class="flex items-baseline gap-sm">
+<span class="font-display-lg text-display-lg text-on-surface">3</span>
+<span class="font-mono-stats text-mono-stats text-on-surface-variant flex items-center">Today</span>
+</div>
+<div class="absolute top-0 right-0 left-0 h-[1px] bg-gradient-to-r from-transparent via-error/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
+</div>
+</section>
+<!-- Middle Section: Dual Charts -->
+<section class="grid grid-cols-1 lg:grid-cols-2 gap-md md:gap-lg">
+<!-- Chart 1: Line Chart -->
+<div class="bg-surface-variant/40 backdrop-blur-xl border border-outline-variant/40 rounded-xl p-lg flex flex-col h-[400px]">
+<div class="flex justify-between items-center mb-lg">
+<h2 class="font-headline-sm text-headline-sm text-on-surface">Queue Length Trend</h2>
+<span class="font-label-md text-label-md text-on-surface-variant">Today vs Yesterday</span>
+</div>
+<div class="flex-grow w-full relative">
+<!-- SVG Chart Representation -->
+<svg class="absolute inset-0 w-full h-full" preserveaspectratio="none" viewbox="0 0 600 300">
+<defs>
+<lineargradient id="areaGradient" x1="0" x2="0" y1="0" y2="1">
+<stop offset="0%" stop-color="#6bd8cb" stop-opacity="0.3"></stop>
+<stop offset="100%" stop-color="#6bd8cb" stop-opacity="0"></stop>
+</lineargradient>
+</defs>
+<!-- Grid Lines -->
+<line class="text-outline-variant/20" stroke="currentColor" stroke-dasharray="4" stroke-width="1" x1="0" x2="600" y1="50" y2="50"></line>
+<line class="text-outline-variant/20" stroke="currentColor" stroke-dasharray="4" stroke-width="1" x1="0" x2="600" y1="125" y2="125"></line>
+<line class="text-outline-variant/20" stroke="currentColor" stroke-dasharray="4" stroke-width="1" x1="0" x2="600" y1="200" y2="200"></line>
+<line class="text-outline-variant/40" stroke="currentColor" stroke-width="1" x1="0" x2="600" y1="275" y2="275"></line>
+<!-- Area Fill -->
+<path d="M0,275 L0,150 Q50,120 100,180 T200,100 T300,140 T400,60 T500,120 T600,80 L600,275 Z" fill="url(#areaGradient)"></path>
+<!-- Data Line -->
+<path class="text-primary" d="M0,150 Q50,120 100,180 T200,100 T300,140 T400,60 T500,120 T600,80" fill="none" stroke="currentColor" stroke-width="3" style="filter: drop-shadow(0 4px 6px rgba(107,216,203,0.3));"></path>
+<!-- Data Line (Yesterday - Subtle) -->
+<path class="text-outline" d="M0,200 Q50,220 100,190 T200,210 T300,180 T400,220 T500,190 T600,200" fill="none" stroke="currentColor" stroke-dasharray="6,4" stroke-width="1.5"></path>
+</svg>
+<!-- Axis Labels -->
+<div class="absolute bottom-[-24px] left-0 w-full flex justify-between font-mono-stats text-[11px] text-on-surface-variant">
+<span>8 AM</span>
+<span>10 AM</span>
+<span>12 PM</span>
+<span>2 PM</span>
+<span>4 PM</span>
+<span>6 PM</span>
+</div>
+</div>
+</div>
+<!-- Chart 2: Bar Chart -->
+<div class="bg-surface-variant/40 backdrop-blur-xl border border-outline-variant/40 rounded-xl p-lg flex flex-col h-[400px]">
+<div class="flex justify-between items-center mb-lg">
+<h2 class="font-headline-sm text-headline-sm text-on-surface">Average Wait Time</h2>
+<span class="font-label-md text-label-md text-on-surface-variant">Last 7 Days (Mins)</span>
+</div>
+<div class="flex-grow w-full relative">
+<!-- SVG Chart Representation -->
+<svg class="absolute inset-0 w-full h-full" preserveaspectratio="none" viewbox="0 0 600 300">
+<defs>
+<lineargradient id="barGradient" x1="0" x2="0" y1="0" y2="1">
+<stop offset="0%" stop-color="#6bd8cb"></stop>
+<stop offset="100%" stop-color="#006a61"></stop>
+</lineargradient>
+</defs>
+<!-- Grid Lines -->
+<line class="text-outline-variant/20" stroke="currentColor" stroke-dasharray="4" stroke-width="1" x1="0" x2="600" y1="50" y2="50"></line>
+<line class="text-outline-variant/20" stroke="currentColor" stroke-dasharray="4" stroke-width="1" x1="0" x2="600" y1="125" y2="125"></line>
+<line class="text-outline-variant/20" stroke="currentColor" stroke-dasharray="4" stroke-width="1" x1="0" x2="600" y1="200" y2="200"></line>
+<line class="text-outline-variant/40" stroke="currentColor" stroke-width="1" x1="0" x2="600" y1="275" y2="275"></line>
+<!-- Bars -->
+<g class="hover:opacity-80 transition-opacity cursor-pointer">
+<rect fill="url(#barGradient)" height="125" rx="4" width="40" x="30" y="150"></rect>
+</g>
+<g class="hover:opacity-80 transition-opacity cursor-pointer">
+<rect fill="url(#barGradient)" height="95" rx="4" width="40" x="115" y="180"></rect>
+</g>
+<g class="hover:opacity-80 transition-opacity cursor-pointer">
+<rect fill="url(#barGradient)" height="185" rx="4" width="40" x="200" y="90"></rect>
+</g>
+<g class="hover:opacity-80 transition-opacity cursor-pointer">
+<rect fill="url(#barGradient)" height="155" rx="4" width="40" x="285" y="120"></rect>
+</g>
+<g class="hover:opacity-80 transition-opacity cursor-pointer">
+<rect fill="url(#barGradient)" height="75" rx="4" width="40" x="370" y="200"></rect>
+</g>
+<g class="hover:opacity-80 transition-opacity cursor-pointer">
+<rect fill="url(#barGradient)" height="135" rx="4" width="40" x="455" y="140"></rect>
+</g>
+<g class="hover:opacity-80 transition-opacity cursor-pointer">
+<rect fill="url(#barGradient)" height="215" rx="4" width="40" x="540" y="60"></rect>
+</g>
+</svg>
+<!-- Axis Labels -->
+<div class="absolute bottom-[-24px] left-0 w-full flex justify-between px-[35px] font-mono-stats text-[11px] text-on-surface-variant">
+<span>Mon</span>
+<span>Tue</span>
+<span>Wed</span>
+<span>Thu</span>
+<span>Fri</span>
+<span>Sat</span>
+<span>Sun</span>
+</div>
+</div>
+</div>
+</section>
+<!-- Bottom Section: Heatmap -->
+<section class="w-full">
+<div class="bg-surface-variant/40 backdrop-blur-xl border border-outline-variant/40 rounded-xl p-lg flex flex-col">
+<div class="flex justify-between items-center mb-lg">
+<h2 class="font-headline-sm text-headline-sm text-on-surface">Busiest Hours</h2>
+<div class="flex items-center gap-xs font-label-md text-label-md text-on-surface-variant">
+<span>Low</span>
+<div class="w-3 h-3 rounded-sm bg-primary/10"></div>
+<div class="w-3 h-3 rounded-sm bg-primary/40"></div>
+<div class="w-3 h-3 rounded-sm bg-primary/70"></div>
+<div class="w-3 h-3 rounded-sm bg-primary"></div>
+<span>High</span>
+</div>
+</div>
+<!-- Heatmap Grid Implementation -->
+<div class="w-full overflow-x-auto">
+<div class="min-w-[800px]">
+<!-- X-Axis Labels (Hours) -->
+<div class="flex ml-16 mb-2 font-mono-stats text-[10px] text-on-surface-variant">
+<div class="flex-1 text-center">8a</div>
+<div class="flex-1 text-center">9a</div>
+<div class="flex-1 text-center">10a</div>
+<div class="flex-1 text-center">11a</div>
+<div class="flex-1 text-center">12p</div>
+<div class="flex-1 text-center">1p</div>
+<div class="flex-1 text-center">2p</div>
+<div class="flex-1 text-center">3p</div>
+<div class="flex-1 text-center">4p</div>
+<div class="flex-1 text-center">5p</div>
+<div class="flex-1 text-center">6p</div>
+</div>
+<!-- Heatmap Rows -->
+<!-- Monday -->
+<div class="flex items-center mb-1">
+<div class="w-16 font-label-md text-label-md text-on-surface-variant text-right pr-sm">Mon</div>
+<div class="flex-1 flex gap-1 h-8">
+<div class="flex-1 rounded-sm bg-primary/20 hover:border hover:border-primary transition-all"></div>
+<div class="flex-1 rounded-sm bg-primary/40 hover:border hover:border-primary transition-all"></div>
+<div class="flex-1 rounded-sm bg-primary/80 hover:border hover:border-primary transition-all"></div>
+<div class="flex-1 rounded-sm bg-primary hover:border hover:border-primary-fixed transition-all shadow-[0_0_8px_rgba(107,216,203,0.4)]"></div>
+<div class="flex-1 rounded-sm bg-primary/60 hover:border hover:border-primary transition-all"></div>
+<div class="flex-1 rounded-sm bg-primary/30 hover:border hover:border-primary transition-all"></div>
+<div class="flex-1 rounded-sm bg-primary/40 hover:border hover:border-primary transition-all"></div>
+<div class="flex-1 rounded-sm bg-primary/70 hover:border hover:border-primary transition-all"></div>
+<div class="flex-1 rounded-sm bg-primary/50 hover:border hover:border-primary transition-all"></div>
+<div class="flex-1 rounded-sm bg-primary/20 hover:border hover:border-primary transition-all"></div>
+<div class="flex-1 rounded-sm bg-primary/10 hover:border hover:border-primary transition-all"></div>
+</div>
+</div>
+<!-- Tuesday -->
+<div class="flex items-center mb-1">
+<div class="w-16 font-label-md text-label-md text-on-surface-variant text-right pr-sm">Tue</div>
+<div class="flex-1 flex gap-1 h-8">
+<div class="flex-1 rounded-sm bg-primary/10 hover:border hover:border-primary transition-all"></div>
+<div class="flex-1 rounded-sm bg-primary/30 hover:border hover:border-primary transition-all"></div>
+<div class="flex-1 rounded-sm bg-primary/70 hover:border hover:border-primary transition-all"></div>
+<div class="flex-1 rounded-sm bg-primary/90 hover:border hover:border-primary transition-all"></div>
+<div class="flex-1 rounded-sm bg-primary/50 hover:border hover:border-primary transition-all"></div>
+<div class="flex-1 rounded-sm bg-primary/20 hover:border hover:border-primary transition-all"></div>
+<div class="flex-1 rounded-sm bg-primary/20 hover:border hover:border-primary transition-all"></div>
+<div class="flex-1 rounded-sm bg-primary/60 hover:border hover:border-primary transition-all"></div>
+<div class="flex-1 rounded-sm bg-primary/80 hover:border hover:border-primary transition-all"></div>
+<div class="flex-1 rounded-sm bg-primary/30 hover:border hover:border-primary transition-all"></div>
+<div class="flex-1 rounded-sm bg-primary/10 hover:border hover:border-primary transition-all"></div>
+</div>
+</div>
+<!-- Wednesday -->
+<div class="flex items-center mb-1">
+<div class="w-16 font-label-md text-label-md text-on-surface-variant text-right pr-sm">Wed</div>
+<div class="flex-1 flex gap-1 h-8">
+<div class="flex-1 rounded-sm bg-primary/20 hover:border hover:border-primary transition-all"></div>
+<div class="flex-1 rounded-sm bg-primary/50 hover:border hover:border-primary transition-all"></div>
+<div class="flex-1 rounded-sm bg-primary hover:border hover:border-primary-fixed transition-all shadow-[0_0_8px_rgba(107,216,203,0.4)]"></div>
+<div class="flex-1 rounded-sm bg-primary/80 hover:border hover:border-primary transition-all"></div>
+<div class="flex-1 rounded-sm bg-primary/40 hover:border hover:border-primary transition-all"></div>
+<div class="flex-1 rounded-sm bg-primary/30 hover:border hover:border-primary transition-all"></div>
+<div class="flex-1 rounded-sm bg-primary/50 hover:border hover:border-primary transition-all"></div>
+<div class="flex-1 rounded-sm bg-primary/60 hover:border hover:border-primary transition-all"></div>
+<div class="flex-1 rounded-sm bg-primary/40 hover:border hover:border-primary transition-all"></div>
+<div class="flex-1 rounded-sm bg-primary/20 hover:border hover:border-primary transition-all"></div>
+<div class="flex-1 rounded-sm bg-primary/10 hover:border hover:border-primary transition-all"></div>
+</div>
+</div>
+<!-- Thursday -->
+<div class="flex items-center mb-1">
+<div class="w-16 font-label-md text-label-md text-on-surface-variant text-right pr-sm">Thu</div>
+<div class="flex-1 flex gap-1 h-8">
+<div class="flex-1 rounded-sm bg-primary/10 hover:border hover:border-primary transition-all"></div>
+<div class="flex-1 rounded-sm bg-primary/40 hover:border hover:border-primary transition-all"></div>
+<div class="flex-1 rounded-sm bg-primary/60 hover:border hover:border-primary transition-all"></div>
+<div class="flex-1 rounded-sm bg-primary/70 hover:border hover:border-primary transition-all"></div>
+<div class="flex-1 rounded-sm bg-primary/60 hover:border hover:border-primary transition-all"></div>
+<div class="flex-1 rounded-sm bg-primary/40 hover:border hover:border-primary transition-all"></div>
+<div class="flex-1 rounded-sm bg-primary/30 hover:border hover:border-primary transition-all"></div>
+<div class="flex-1 rounded-sm bg-primary/50 hover:border hover:border-primary transition-all"></div>
+<div class="flex-1 rounded-sm bg-primary/70 hover:border hover:border-primary transition-all"></div>
+<div class="flex-1 rounded-sm bg-primary/40 hover:border hover:border-primary transition-all"></div>
+<div class="flex-1 rounded-sm bg-primary/20 hover:border hover:border-primary transition-all"></div>
+</div>
+</div>
+<!-- Friday -->
+<div class="flex items-center">
+<div class="w-16 font-label-md text-label-md text-on-surface-variant text-right pr-sm">Fri</div>
+<div class="flex-1 flex gap-1 h-8">
+<div class="flex-1 rounded-sm bg-primary/30 hover:border hover:border-primary transition-all"></div>
+<div class="flex-1 rounded-sm bg-primary/60 hover:border hover:border-primary transition-all"></div>
+<div class="flex-1 rounded-sm bg-primary hover:border hover:border-primary-fixed transition-all shadow-[0_0_8px_rgba(107,216,203,0.4)]"></div>
+<div class="flex-1 rounded-sm bg-primary hover:border hover:border-primary-fixed transition-all shadow-[0_0_8px_rgba(107,216,203,0.4)]"></div>
+<div class="flex-1 rounded-sm bg-primary/80 hover:border hover:border-primary transition-all"></div>
+<div class="flex-1 rounded-sm bg-primary/50 hover:border hover:border-primary transition-all"></div>
+<div class="flex-1 rounded-sm bg-primary/40 hover:border hover:border-primary transition-all"></div>
+<div class="flex-1 rounded-sm bg-primary/70 hover:border hover:border-primary transition-all"></div>
+<div class="flex-1 rounded-sm bg-primary/90 hover:border hover:border-primary transition-all"></div>
+<div class="flex-1 rounded-sm bg-primary/60 hover:border hover:border-primary transition-all"></div>
+<div class="flex-1 rounded-sm bg-primary/30 hover:border hover:border-primary transition-all"></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+</main>
+<!-- Footer -->
+<footer class="w-full py-md bg-background dark:bg-background border-t border-outline-variant/20 mt-auto">
+<div class="flex flex-col md:flex-row justify-between items-center px-lg max-w-container-max mx-auto gap-md md:gap-0">
+<!-- Brand / Copyright -->
+<div class="flex items-center gap-sm">
+<span class="font-headline-sm text-headline-sm text-on-surface font-bold">QueueFlow</span>
+<span class="font-label-md text-label-md text-secondary dark:text-secondary">© 2024 QueueFlow Clinical Systems. All rights reserved.</span>
+</div>
+<!-- Links -->
+<div class="flex items-center gap-lg">
+<a class="font-label-md text-label-md text-on-surface-variant hover:text-tertiary transition-colors transition-opacity hover:opacity-100 opacity-70" href="#">Privacy Policy</a>
+<a class="font-label-md text-label-md text-on-surface-variant hover:text-tertiary transition-colors transition-opacity hover:opacity-100 opacity-70" href="#">Terms of Service</a>
+<a class="font-label-md text-label-md text-on-surface-variant hover:text-tertiary transition-colors transition-opacity hover:opacity-100 opacity-70" href="#">Support</a>
+</div>
+</div>
+</footer>
+</body></html>

@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>QueueFlow - Queue Details</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "outline-variant": "#3d4947",
+                      "primary-fixed-dim": "#6bd8cb",
+                      "secondary-fixed": "#d5e3fc",
+                      "primary": "#6bd8cb",
+                      "on-tertiary-fixed": "#001f28",
+                      "surface-dim": "#0f1413",
+                      "inverse-on-surface": "#2c3130",
+                      "secondary-fixed-dim": "#b9c7df",
+                      "on-primary-container": "#00302b",
+                      "inverse-surface": "#dee4e1",
+                      "background": "#0f1413",
+                      "on-tertiary-container": "#002e3b",
+                      "surface": "#0f1413",
+                      "error-container": "#93000a",
+                      "on-surface-variant": "#bcc9c6",
+                      "surface-container-lowest": "#0a0f0e",
+                      "primary-fixed": "#89f5e7",
+                      "on-error-container": "#ffdad6",
+                      "surface-tint": "#6bd8cb",
+                      "error": "#ffb4ab",
+                      "secondary": "#b9c7df",
+                      "outline": "#879391",
+                      "on-primary-fixed-variant": "#005049",
+                      "on-primary-fixed": "#00201d",
+                      "on-error": "#690005",
+                      "tertiary-fixed-dim": "#6cd3f7",
+                      "surface-container-high": "#262b2a",
+                      "on-secondary-fixed": "#0d1c2e",
+                      "on-primary": "#003732",
+                      "surface-container-highest": "#303635",
+                      "on-tertiary": "#003543",
+                      "tertiary": "#6cd3f7",
+                      "tertiary-fixed": "#b7eaff",
+                      "on-secondary-fixed-variant": "#3a485b",
+                      "primary-container": "#29a195",
+                      "surface-variant": "#303635",
+                      "on-background": "#dee4e1",
+                      "on-surface": "#dee4e1",
+                      "surface-container": "#1b2120",
+                      "on-tertiary-fixed-variant": "#004e61",
+                      "surface-container-low": "#171d1c",
+                      "surface-bright": "#353a39",
+                      "secondary-container": "#3c4a5e",
+                      "inverse-primary": "#006a61",
+                      "tertiary-container": "#269dbe",
+                      "on-secondary-container": "#abb9d1",
+                      "on-secondary": "#233144"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.25rem",
+                      "lg": "0.5rem",
+                      "xl": "0.75rem",
+                      "full": "9999px"
+              },
+              "spacing": {
+                      "xs": "4px",
+                      "sm": "8px",
+                      "xl": "48px",
+                      "lg": "24px",
+                      "gutter": "20px",
+                      "md": "16px",
+                      "container-max": "1440px",
+                      "base": "4px"
+              },
+              "fontFamily": {
+                      "body-lg": ["Inter"],
+                      "label-md": ["Inter"],
+                      "body-md": ["Inter"],
+                      "headline-md": ["Inter"],
+                      "mono-stats": ["Inter"],
+                      "headline-lg": ["Inter"],
+                      "display-lg": ["Inter"],
+                      "body-sm": ["Inter"],
+                      "headline-sm": ["Inter"]
+              },
+              "fontSize": {
+                      "body-lg": ["18px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                      "label-md": ["12px", {"lineHeight": "1", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                      "body-md": ["16px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                      "headline-md": ["24px", {"lineHeight": "1.3", "fontWeight": "600"}],
+                      "mono-stats": ["14px", {"lineHeight": "1", "letterSpacing": "0.02em", "fontWeight": "500"}],
+                      "headline-lg": ["32px", {"lineHeight": "1.2", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                      "display-lg": ["48px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                      "body-sm": ["14px", {"lineHeight": "1.5", "fontWeight": "400"}],
+                      "headline-sm": ["20px", {"lineHeight": "1.4", "fontWeight": "600"}]
+              }
+            }
+          }
+        }
+    </script>
+<style>
+        .glass-panel {
+            background: rgba(15, 23, 42, 0.6);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(148, 163, 184, 0.2);
+        }
+        .glow-point {
+            border-top: 1px solid theme('colors.primary');
+        }
+        .bg-mesh {
+            background-color: #0f172a;
+            background-image: 
+                radial-gradient(at 0% 0%, hsla(180, 50%, 15%, 0.4) 0px, transparent 50%),
+                radial-gradient(at 100% 100%, hsla(195, 60%, 15%, 0.4) 0px, transparent 50%);
+        }
+        .text-gradient {
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-image: linear-gradient(to right, theme('colors.primary'), theme('colors.tertiary'));
+        }
+    </style>
+</head>
+<body class="bg-mesh text-on-surface min-h-screen flex flex-col font-body-md overflow-x-hidden pt-20">
+<!-- TopNavBar -->
+<nav class="fixed top-0 w-full z-50 bg-surface/60 dark:bg-surface/60 backdrop-blur-xl border-b border-outline-variant/30 shadow-sm">
+<div class="flex justify-between items-center px-lg py-sm w-full max-w-container-max mx-auto">
+<div class="flex items-center gap-md">
+<span class="font-headline-lg text-headline-lg font-bold tracking-tight text-primary dark:text-primary">QueueFlow</span>
+</div>
+<div class="flex items-center gap-md">
+<button class="text-on-surface-variant dark:text-on-surface-variant hover:bg-surface-variant/50 transition-colors duration-200 active:scale-95 p-sm rounded-full">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">notifications</span>
+</button>
+<button class="text-on-surface-variant dark:text-on-surface-variant hover:bg-surface-variant/50 transition-colors duration-200 active:scale-95 p-sm rounded-full">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">settings</span>
+</button>
+<div class="h-8 w-8 rounded-full overflow-hidden border border-outline-variant/30 ml-sm">
+<img alt="Medical staff profile avatar" class="w-full h-full object-cover" data-alt="A detailed headshot portrait of a friendly medical professional in a clean clinical environment. The lighting is soft and flattering, emphasizing a trustworthy and efficient demeanor. They are wearing modern, minimalist scrubs. The background is a slightly blurred, high-tech clinic setting with cool blue and teal tones to match a premium dark-mode glassmorphism aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCDWvSwQ0bN0OqoGA6Z7J1IuV1SCj2j7NUk955WsNyevSGtnkrKiInEsf3KXtd6jbi5n9HIzAbiTC4iIpUGq9ymggtdoX5QFqi1mIoB4Tx8Yf3ngmOIi_mskCUPekTah8SFEMtbtmk7cMnD1PMxmmNBkFoWA3EAE7yeRIuSJ6ax_L7QssxyI1oDHeiFsebEfKn09iqPot4OUFsrIA0SpTE21eMk6i_cNF3-moyBMYZMxnp6YAguDR0TIw"/>
+</div>
+<button class="font-label-md text-label-md text-on-surface-variant hover:text-primary transition-colors ml-sm active:scale-95">Logout</button>
+</div>
+</div>
+</nav>
+<!-- Main Content Canvas -->
+<main class="flex-1 w-full max-w-container-max mx-auto px-lg py-lg flex flex-col md:flex-row gap-lg">
+<!-- Left Column (60%) -->
+<div class="w-full md:w-3/5 flex flex-col gap-lg">
+<!-- "Now Serving" Banner -->
+<section class="glass-panel rounded-xl p-lg relative overflow-hidden group">
+<div class="absolute inset-0 border-2 border-amber-500/50 rounded-xl animate-pulse pointer-events-none"></div>
+<div class="absolute left-0 top-0 bottom-0 w-1 bg-amber-400"></div>
+<div class="flex justify-between items-start mb-md relative z-10">
+<h2 class="font-label-md text-label-md text-amber-400 uppercase tracking-widest flex items-center gap-xs">
+<span class="material-symbols-outlined text-[16px]">campaign</span> Now Serving
+                    </h2>
+<span class="font-mono-stats text-mono-stats text-on-surface-variant bg-surface-container px-sm py-xs rounded">Room A2</span>
+</div>
+<div class="flex flex-col relative z-10">
+<div class="flex items-baseline gap-sm mb-xs">
+<span class="font-display-lg text-display-lg text-on-surface">#7</span>
+<h3 class="font-headline-lg text-headline-lg text-on-surface">Priya Sharma</h3>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant flex items-center gap-xs">
+<span class="material-symbols-outlined text-[14px]">schedule</span> Waiting for 22m • General Checkup
+                    </p>
+</div>
+</section>
+<!-- Control Buttons -->
+<div class="flex gap-md w-full">
+<button class="flex-1 bg-gradient-to-r from-emerald-600 to-emerald-500 hover:from-emerald-500 hover:to-emerald-400 text-white font-headline-sm text-headline-sm py-md rounded-lg transition-all duration-300 shadow-[0_0_15px_rgba(16,185,129,0.3)] hover:shadow-[0_0_20px_rgba(16,185,129,0.5)] active:scale-[0.98] flex items-center justify-center gap-sm">
+<span class="material-symbols-outlined">check_circle</span> Complete
+                </button>
+<button class="flex-1 bg-gradient-to-r from-primary to-tertiary hover:opacity-90 text-on-primary font-headline-sm text-headline-sm py-md rounded-lg transition-all duration-300 shadow-[0_0_15px_rgba(107,216,203,0.3)] hover:shadow-[0_0_20px_rgba(107,216,203,0.5)] active:scale-[0.98] flex items-center justify-center gap-sm">
+<span class="material-symbols-outlined">record_voice_over</span> Call Next
+                </button>
+</div>
+<!-- Add Patient Form -->
+<section class="glass-panel rounded-xl p-md glow-point">
+<h3 class="font-label-md text-label-md text-on-surface-variant uppercase mb-sm">Add to Queue</h3>
+<form class="flex flex-col sm:flex-row gap-sm items-end">
+<div class="flex-1 w-full">
+<label class="sr-only" for="patientName">Patient Name</label>
+<input class="w-full bg-surface-container-high border-outline-variant text-on-surface focus:border-primary focus:ring-1 focus:ring-primary rounded-md font-body-md text-body-md py-sm px-md placeholder:text-on-surface-variant/50 transition-colors" id="patientName" placeholder="Patient Name" type="text"/>
+</div>
+<button class="w-full sm:w-auto bg-transparent border border-outline-variant text-on-surface hover:border-primary hover:text-primary font-body-md text-body-md py-sm px-lg rounded-md transition-colors whitespace-nowrap flex items-center justify-center gap-xs" type="button">
+<span class="material-symbols-outlined text-[18px]">person_add</span> Add
+                     </button>
+</form>
+</section>
+<!-- Waiting List -->
+<section class="glass-panel rounded-xl flex flex-col glow-point overflow-hidden">
+<div class="px-md py-sm border-b border-outline-variant/30 bg-surface-container-low flex justify-between items-center">
+<h3 class="font-label-md text-label-md text-on-surface uppercase tracking-wider">Waiting List</h3>
+<span class="font-mono-stats text-mono-stats text-on-surface-variant bg-surface-variant px-2 py-1 rounded">5 Patients</span>
+</div>
+<div class="flex flex-col">
+<!-- Row 1 -->
+<div class="flex items-center justify-between p-sm border-b border-outline-variant/20 hover:bg-surface-variant/30 transition-colors group">
+<div class="flex items-center gap-md w-1/2">
+<div class="w-1 h-8 bg-tertiary rounded-full"></div>
+<span class="font-mono-stats text-mono-stats text-on-surface-variant w-8">#8</span>
+<span class="font-body-md text-body-md text-on-surface truncate">Marcus Johnson</span>
+</div>
+<div class="flex items-center gap-sm md:gap-md justify-end w-1/2">
+<span class="font-mono-stats text-mono-stats text-on-surface-variant hidden md:inline">15m</span>
+<span class="bg-tertiary-container/20 text-tertiary font-label-md text-label-md px-2 py-1 rounded border border-tertiary/30">Waiting</span>
+<div class="flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+<button class="text-on-surface-variant hover:text-primary p-1 rounded hover:bg-surface-container"><span class="material-symbols-outlined text-[20px]">keyboard_arrow_up</span></button>
+<button class="text-on-surface-variant hover:text-primary p-1 rounded hover:bg-surface-container"><span class="material-symbols-outlined text-[20px]">keyboard_arrow_down</span></button>
+<button class="text-on-surface-variant hover:text-error p-1 rounded hover:bg-error-container/20"><span class="material-symbols-outlined text-[20px]">close</span></button>
+</div>
+</div>
+</div>
+<!-- Row 2 -->
+<div class="flex items-center justify-between p-sm border-b border-outline-variant/20 hover:bg-surface-variant/30 transition-colors group">
+<div class="flex items-center gap-md w-1/2">
+<div class="w-1 h-8 bg-tertiary rounded-full"></div>
+<span class="font-mono-stats text-mono-stats text-on-surface-variant w-8">#9</span>
+<span class="font-body-md text-body-md text-on-surface truncate">Elena Rodriguez</span>
+</div>
+<div class="flex items-center gap-sm md:gap-md justify-end w-1/2">
+<span class="font-mono-stats text-mono-stats text-on-surface-variant hidden md:inline">12m</span>
+<span class="bg-tertiary-container/20 text-tertiary font-label-md text-label-md px-2 py-1 rounded border border-tertiary/30">Waiting</span>
+<div class="flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+<button class="text-on-surface-variant hover:text-primary p-1 rounded hover:bg-surface-container"><span class="material-symbols-outlined text-[20px]">keyboard_arrow_up</span></button>
+<button class="text-on-surface-variant hover:text-primary p-1 rounded hover:bg-surface-container"><span class="material-symbols-outlined text-[20px]">keyboard_arrow_down</span></button>
+<button class="text-on-surface-variant hover:text-error p-1 rounded hover:bg-error-container/20"><span class="material-symbols-outlined text-[20px]">close</span></button>
+</div>
+</div>
+</div>
+<!-- Row 3 -->
+<div class="flex items-center justify-between p-sm border-b border-outline-variant/20 hover:bg-surface-variant/30 transition-colors group">
+<div class="flex items-center gap-md w-1/2">
+<div class="w-1 h-8 bg-tertiary rounded-full"></div>
+<span class="font-mono-stats text-mono-stats text-on-surface-variant w-8">#10</span>
+<span class="font-body-md text-body-md text-on-surface truncate">David Chen</span>
+</div>
+<div class="flex items-center gap-sm md:gap-md justify-end w-1/2">
+<span class="font-mono-stats text-mono-stats text-on-surface-variant hidden md:inline">8m</span>
+<span class="bg-tertiary-container/20 text-tertiary font-label-md text-label-md px-2 py-1 rounded border border-tertiary/30">Waiting</span>
+<div class="flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+<button class="text-on-surface-variant hover:text-primary p-1 rounded hover:bg-surface-container"><span class="material-symbols-outlined text-[20px]">keyboard_arrow_up</span></button>
+<button class="text-on-surface-variant hover:text-primary p-1 rounded hover:bg-surface-container"><span class="material-symbols-outlined text-[20px]">keyboard_arrow_down</span></button>
+<button class="text-on-surface-variant hover:text-error p-1 rounded hover:bg-error-container/20"><span class="material-symbols-outlined text-[20px]">close</span></button>
+</div>
+</div>
+</div>
+<!-- Row 4 -->
+<div class="flex items-center justify-between p-sm border-b border-outline-variant/20 hover:bg-surface-variant/30 transition-colors group">
+<div class="flex items-center gap-md w-1/2">
+<div class="w-1 h-8 bg-tertiary rounded-full"></div>
+<span class="font-mono-stats text-mono-stats text-on-surface-variant w-8">#11</span>
+<span class="font-body-md text-body-md text-on-surface truncate">Sarah Jenkins</span>
+</div>
+<div class="flex items-center gap-sm md:gap-md justify-end w-1/2">
+<span class="font-mono-stats text-mono-stats text-on-surface-variant hidden md:inline">5m</span>
+<span class="bg-tertiary-container/20 text-tertiary font-label-md text-label-md px-2 py-1 rounded border border-tertiary/30">Waiting</span>
+<div class="flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+<button class="text-on-surface-variant hover:text-primary p-1 rounded hover:bg-surface-container"><span class="material-symbols-outlined text-[20px]">keyboard_arrow_up</span></button>
+<button class="text-on-surface-variant hover:text-primary p-1 rounded hover:bg-surface-container"><span class="material-symbols-outlined text-[20px]">keyboard_arrow_down</span></button>
+<button class="text-on-surface-variant hover:text-error p-1 rounded hover:bg-error-container/20"><span class="material-symbols-outlined text-[20px]">close</span></button>
+</div>
+</div>
+</div>
+<!-- Row 5 -->
+<div class="flex items-center justify-between p-sm border-outline-variant/20 hover:bg-surface-variant/30 transition-colors group">
+<div class="flex items-center gap-md w-1/2">
+<div class="w-1 h-8 bg-tertiary rounded-full"></div>
+<span class="font-mono-stats text-mono-stats text-on-surface-variant w-8">#12</span>
+<span class="font-body-md text-body-md text-on-surface truncate">Michael O'Connor</span>
+</div>
+<div class="flex items-center gap-sm md:gap-md justify-end w-1/2">
+<span class="font-mono-stats text-mono-stats text-on-surface-variant hidden md:inline">1m</span>
+<span class="bg-tertiary-container/20 text-tertiary font-label-md text-label-md px-2 py-1 rounded border border-tertiary/30">Waiting</span>
+<div class="flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+<button class="text-on-surface-variant hover:text-primary p-1 rounded hover:bg-surface-container"><span class="material-symbols-outlined text-[20px]">keyboard_arrow_up</span></button>
+<button class="text-on-surface-variant hover:text-primary p-1 rounded hover:bg-surface-container"><span class="material-symbols-outlined text-[20px]">keyboard_arrow_down</span></button>
+<button class="text-on-surface-variant hover:text-error p-1 rounded hover:bg-error-container/20"><span class="material-symbols-outlined text-[20px]">close</span></button>
+</div>
+</div>
+</div>
+</div>
+</section>
+</div>
+<!-- Right Column (40%) -->
+<div class="w-full md:w-2/5 flex flex-col">
+<!-- History Panel -->
+<section class="glass-panel rounded-xl h-full flex flex-col glow-point">
+<div class="px-md py-sm border-b border-outline-variant/30 bg-surface-container-low flex justify-between items-center cursor-pointer hover:bg-surface-variant/30 transition-colors" id="historyToggle">
+<h3 class="font-label-md text-label-md text-on-surface uppercase tracking-wider flex items-center gap-sm">
+<span class="material-symbols-outlined text-[18px]">history</span> Activity History
+                     </h3>
+<span class="material-symbols-outlined text-on-surface-variant transition-transform duration-300" id="historyIcon">expand_less</span>
+</div>
+<div class="flex-1 overflow-y-auto p-sm flex flex-col gap-sm" id="historyContent">
+<div class="flex items-center justify-between p-sm rounded-lg hover:bg-surface-variant/20 transition-colors border border-transparent hover:border-outline-variant/30">
+<div class="flex flex-col">
+<div class="flex items-baseline gap-sm">
+<span class="font-mono-stats text-mono-stats text-on-surface-variant">#6</span>
+<span class="font-body-sm text-body-sm text-on-surface">James Wilson</span>
+</div>
+<span class="font-label-md text-[10px] text-on-surface-variant/70">10:42 AM</span>
+</div>
+<span class="bg-emerald-900/30 text-emerald-400 font-label-md text-[10px] px-2 py-1 rounded border border-emerald-800/50 flex items-center gap-1">
+<span class="material-symbols-outlined text-[12px]">check</span> Completed
+                         </span>
+</div>
+<div class="flex items-center justify-between p-sm rounded-lg hover:bg-surface-variant/20 transition-colors border border-transparent hover:border-outline-variant/30">
+<div class="flex flex-col">
+<div class="flex items-baseline gap-sm">
+<span class="font-mono-stats text-mono-stats text-on-surface-variant">#5</span>
+<span class="font-body-sm text-body-sm text-on-surface">Anita Patel</span>
+</div>
+<span class="font-label-md text-[10px] text-on-surface-variant/70">10:25 AM</span>
+</div>
+<span class="bg-emerald-900/30 text-emerald-400 font-label-md text-[10px] px-2 py-1 rounded border border-emerald-800/50 flex items-center gap-1">
+<span class="material-symbols-outlined text-[12px]">check</span> Completed
+                         </span>
+</div>
+<div class="flex items-center justify-between p-sm rounded-lg hover:bg-surface-variant/20 transition-colors border border-transparent hover:border-outline-variant/30">
+<div class="flex flex-col">
+<div class="flex items-baseline gap-sm">
+<span class="font-mono-stats text-mono-stats text-on-surface-variant">#4</span>
+<span class="font-body-sm text-body-sm text-on-surface text-on-surface-variant line-through">Robert Frost</span>
+</div>
+<span class="font-label-md text-[10px] text-on-surface-variant/70">10:15 AM</span>
+</div>
+<span class="bg-red-900/30 text-red-400 font-label-md text-[10px] px-2 py-1 rounded border border-red-800/50 flex items-center gap-1">
+<span class="material-symbols-outlined text-[12px]">block</span> Cancelled
+                         </span>
+</div>
+<div class="flex items-center justify-between p-sm rounded-lg hover:bg-surface-variant/20 transition-colors border border-transparent hover:border-outline-variant/30">
+<div class="flex flex-col">
+<div class="flex items-baseline gap-sm">
+<span class="font-mono-stats text-mono-stats text-on-surface-variant">#3</span>
+<span class="font-body-sm text-body-sm text-on-surface">Samantha Lee</span>
+</div>
+<span class="font-label-md text-[10px] text-on-surface-variant/70">09:50 AM</span>
+</div>
+<span class="bg-emerald-900/30 text-emerald-400 font-label-md text-[10px] px-2 py-1 rounded border border-emerald-800/50 flex items-center gap-1">
+<span class="material-symbols-outlined text-[12px]">check</span> Completed
+                         </span>
+</div>
+</div>
+</section>
+</div>
+</main>
+<!-- Footer -->
+<footer class="w-full mt-auto bg-surface-dim dark:bg-surface-dim border-t border-outline-variant/20">
+<div class="flex flex-col md:flex-row justify-between items-center px-lg py-md w-full max-w-container-max mx-auto">
+<div class="flex flex-col md:flex-row items-center gap-sm md:gap-lg">
+<span class="font-headline-sm text-headline-sm font-semibold text-primary">QueueFlow</span>
+<span class="font-label-md text-label-md text-on-surface-variant">© 2024 QueueFlow Clinical Systems. All rights reserved.</span>
+</div>
+<nav class="flex gap-md mt-sm md:mt-0">
+<a class="font-label-md text-label-md text-on-surface-variant hover:text-primary-fixed-dim transition-colors opacity-80 hover:opacity-100" href="#">Privacy Policy</a>
+<a class="font-label-md text-label-md text-on-surface-variant hover:text-primary-fixed-dim transition-colors opacity-80 hover:opacity-100" href="#">Terms of Service</a>
+<a class="font-label-md text-label-md text-on-surface-variant hover:text-primary-fixed-dim transition-colors opacity-80 hover:opacity-100" href="#">Compliance</a>
+<a class="font-label-md text-label-md text-on-surface-variant hover:text-primary-fixed-dim transition-colors opacity-80 hover:opacity-100" href="#">Support</a>
+</nav>
+</div>
+</footer>
+<script>
+        document.getElementById('historyToggle').addEventListener('click', function() {
+            const content = document.getElementById('historyContent');
+            const icon = document.getElementById('historyIcon');
+            
+            if (content.style.display === 'none') {
+                content.style.display = 'flex';
+                icon.style.transform = 'rotate(0deg)';
+            } else {
+                content.style.display = 'none';
+                icon.style.transform = 'rotate(180deg)';
+            }
+        });
+    </script>
+</body></html>

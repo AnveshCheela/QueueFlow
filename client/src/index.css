@@ -1,0 +1,173 @@
+@import "tailwindcss";
+
+@theme {
+  --color-background: #000000;
+  --color-surface: #0a0a0a;
+  --color-surface-dim: #050505;
+  --color-surface-container-lowest: #000000;
+  --color-surface-container-low: #111111;
+  --color-surface-container: #171717;
+  --color-surface-container-high: #262626;
+  --color-surface-container-highest: #333333;
+  --color-surface-bright: #262626;
+  --color-surface-variant: #1a1a1a;
+  --color-on-surface: #ffffff;
+  --color-on-surface-variant: #a3a3a3;
+  --color-on-background: #ffffff;
+  
+  /* Primary becomes pure white/silver */
+  --color-primary: #ffffff;
+  --color-primary-container: #262626;
+  --color-primary-fixed: #e5e5e5;
+  --color-primary-fixed-dim: #d4d4d4;
+  --color-on-primary: #000000;
+  --color-on-primary-container: #ffffff;
+  --color-on-primary-fixed: #000000;
+  
+  /* Secondary becomes darker greys */
+  --color-secondary: #a3a3a3;
+  --color-secondary-container: #1a1a1a;
+  --color-secondary-fixed: #d4d4d4;
+  --color-secondary-fixed-dim: #a3a3a3;
+  --color-on-secondary: #000000;
+  --color-on-secondary-container: #e5e5e5;
+  
+  /* Tertiary becomes soft greys */
+  --color-tertiary: #d4d4d4;
+  --color-tertiary-container: #333333;
+  --color-tertiary-fixed: #e5e5e5;
+  --color-tertiary-fixed-dim: #d4d4d4;
+  --color-on-tertiary: #000000;
+  --color-on-tertiary-container: #ffffff;
+  
+  /* Error stays a muted soft red/grey just for critical errors, but heavily desaturated */
+  --color-error: #ffb4ab;
+  --color-error-container: #93000a;
+  --color-on-error: #690005;
+  --color-on-error-container: #ffdad6;
+  
+  /* Outlines */
+  --color-outline: #525252;
+  --color-outline-variant: #262626;
+  --color-inverse-surface: #ffffff;
+  --color-inverse-on-surface: #000000;
+  --color-inverse-primary: #000000;
+  --color-surface-tint: #ffffff;
+
+  --font-family-sans: 'Inter', sans-serif;
+}
+
+@layer base {
+  body {
+    font-family: var(--font-family-sans);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  
+  .material-symbols-outlined {
+    font-size: inherit !important;
+  }
+}
+
+/* Glass panel effects - updated for sleek monochrome */
+.glass-panel {
+  background: rgba(15, 15, 15, 0.8);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.glass-panel-glow {
+  background: rgba(20, 20, 20, 0.9);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-top: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.glass-panel:hover {
+  border-color: rgba(255, 255, 255, 0.25);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+}
+
+.glass-modal {
+  background-color: rgba(10, 10, 10, 0.95);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.7);
+}
+
+/* Backgrounds - remove colorful mesh/blobs, use clean solid backgrounds */
+.bg-mesh {
+  background: #000000;
+}
+
+.bg-blob {
+  display: none;
+}
+
+/* Input field styling */
+.input-field {
+  background-color: #0a0a0a;
+  border: 1px solid #333333;
+  color: #ffffff;
+  transition: all 0.2s ease-in-out;
+}
+
+.input-field:focus {
+  outline: none;
+  border-color: #ffffff;
+  box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.2);
+}
+
+/* Primary solid button (replaces btn-gradient) */
+.btn-gradient {
+  background: #ffffff;
+  color: #000000;
+  transition: all 0.2s ease;
+  border: 1px solid #ffffff;
+}
+
+.btn-gradient:hover {
+  background: #e5e5e5;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(255, 255, 255, 0.15);
+}
+
+/* Secondary solid button (replaces gradient-btn) */
+.gradient-btn {
+  background: transparent;
+  color: #ffffff;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  transition: all 0.2s ease;
+}
+
+.gradient-btn:hover {
+  border-color: #ffffff;
+  background: rgba(255, 255, 255, 0.05);
+}
+
+/* Glow ring for public display - updated to sharp silver border */
+.glow-ring {
+  background: #050505;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.05), inset 0 0 0 1px rgba(255, 255, 255, 0.05);
+  transition: all 0.3s ease;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-track {
+  background: #000000;
+}
+::-webkit-scrollbar-thumb {
+  background: #333333;
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #525252;
+}

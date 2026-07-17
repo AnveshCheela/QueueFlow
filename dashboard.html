@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>QueueFlow - Clinical Dashboard</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "tertiary-fixed-dim": "#6cd3f7",
+                        "secondary-container": "#3c4a5e",
+                        "inverse-primary": "#006a61",
+                        "on-secondary-fixed": "#0d1c2e",
+                        "on-primary-fixed-variant": "#005049",
+                        "on-tertiary-fixed": "#001f28",
+                        "on-secondary": "#233144",
+                        "primary-fixed": "#89f5e7",
+                        "tertiary-container": "#269dbe",
+                        "secondary": "#b9c7df",
+                        "on-secondary-fixed-variant": "#3a485b",
+                        "background": "#0f1413",
+                        "surface-tint": "#6bd8cb",
+                        "outline-variant": "#3d4947",
+                        "surface-dim": "#0f1413",
+                        "secondary-fixed": "#d5e3fc",
+                        "outline": "#879391",
+                        "surface-container-highest": "#303635",
+                        "surface-bright": "#353a39",
+                        "on-primary": "#003732",
+                        "tertiary": "#6cd3f7",
+                        "error-container": "#93000a",
+                        "surface-container-high": "#262b2a",
+                        "primary-container": "#29a195",
+                        "on-primary-fixed": "#00201d",
+                        "on-background": "#dee4e1",
+                        "secondary-fixed-dim": "#b9c7df",
+                        "on-tertiary-fixed-variant": "#004e61",
+                        "on-error": "#690005",
+                        "primary-fixed-dim": "#6bd8cb",
+                        "surface": "#0f1413",
+                        "tertiary-fixed": "#b7eaff",
+                        "on-surface": "#dee4e1",
+                        "on-error-container": "#ffdad6",
+                        "surface-container-lowest": "#0a0f0e",
+                        "surface-container": "#1b2120",
+                        "on-tertiary": "#003543",
+                        "surface-container-low": "#171d1c",
+                        "primary": "#6bd8cb",
+                        "error": "#ffb4ab",
+                        "inverse-surface": "#dee4e1",
+                        "on-surface-variant": "#bcc9c6",
+                        "surface-variant": "#303635",
+                        "on-secondary-container": "#abb9d1",
+                        "on-tertiary-container": "#002e3b",
+                        "inverse-on-surface": "#2c3130",
+                        "on-primary-container": "#00302b"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "xs": "4px",
+                        "container-max": "1440px",
+                        "md": "16px",
+                        "lg": "24px",
+                        "base": "4px",
+                        "sm": "8px",
+                        "gutter": "20px",
+                        "xl": "48px"
+                    },
+                    "fontFamily": {
+                        "headline-sm": ["Inter"],
+                        "label-md": ["Inter"],
+                        "display-lg": ["Inter"],
+                        "body-lg": ["Inter"],
+                        "headline-md": ["Inter"],
+                        "body-md": ["Inter"],
+                        "headline-lg": ["Inter"],
+                        "mono-stats": ["Inter"],
+                        "body-sm": ["Inter"]
+                    },
+                    "fontSize": {
+                        "headline-sm": ["20px", { "lineHeight": "1.4", "fontWeight": "600" }],
+                        "label-md": ["12px", { "lineHeight": "1", "letterSpacing": "0.05em", "fontWeight": "600" }],
+                        "display-lg": ["48px", { "lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                        "body-lg": ["18px", { "lineHeight": "1.6", "fontWeight": "400" }],
+                        "headline-md": ["24px", { "lineHeight": "1.3", "fontWeight": "600" }],
+                        "body-md": ["16px", { "lineHeight": "1.6", "fontWeight": "400" }],
+                        "headline-lg": ["32px", { "lineHeight": "1.2", "letterSpacing": "-0.01em", "fontWeight": "600" }],
+                        "mono-stats": ["14px", { "lineHeight": "1", "letterSpacing": "0.02em", "fontWeight": "500" }],
+                        "body-sm": ["14px", { "lineHeight": "1.5", "fontWeight": "400" }]
+                    }
+                }
+            }
+        }
+    </script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        body { font-family: 'Inter', sans-serif; }
+        .glass-panel {
+            background: rgba(30, 41, 59, 0.6);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(51, 65, 85, 1);
+            border-top: 1px solid rgba(107, 216, 203, 0.4); /* Glow point */
+        }
+        .glass-panel:hover {
+            backdrop-filter: blur(20px);
+            border-color: rgba(107, 216, 203, 0.3);
+            box-shadow: 0 0 15px rgba(107, 216, 203, 0.1);
+        }
+        .gradient-btn {
+            background: linear-gradient(135deg, #269dbe, #6bd8cb);
+            transition: all 0.3s ease;
+        }
+        .gradient-btn:hover {
+            box-shadow: 0 0 12px rgba(107, 216, 203, 0.4);
+        }
+        .bg-mesh {
+            background-image: 
+                radial-gradient(at 0% 0%, rgba(38, 157, 190, 0.15) 0px, transparent 50%),
+                radial-gradient(at 100% 0%, rgba(107, 216, 203, 0.1) 0px, transparent 50%),
+                radial-gradient(at 100% 100%, rgba(38, 157, 190, 0.15) 0px, transparent 50%),
+                radial-gradient(at 0% 100%, rgba(107, 216, 203, 0.1) 0px, transparent 50%);
+        }
+    </style>
+</head>
+<body class="bg-background text-on-background min-h-screen relative overflow-x-hidden bg-mesh">
+<!-- TopNavBar (From JSON) -->
+<nav class="bg-surface/60 dark:bg-surface/60 backdrop-blur-xl font-headline-md text-headline-md docked full-width top-0 sticky z-50 shadow-sm">
+<div class="flex justify-between items-center w-full px-lg py-sm max-w-container-max mx-auto border-b border-outline-variant/30">
+<div class="font-headline-lg text-headline-lg font-bold text-primary dark:text-primary">
+                QueueFlow
+            </div>
+<div class="flex items-center gap-md">
+<div class="flex gap-sm text-on-surface-variant hover:text-primary-fixed-dim transition-colors cursor-pointer active:opacity-80 transition-all">
+<span class="material-symbols-outlined">notifications</span>
+<span class="material-symbols-outlined">settings</span>
+</div>
+<div class="flex items-center gap-sm ml-sm pl-sm border-l border-outline-variant/30">
+<img alt="User avatar" class="w-8 h-8 rounded-full object-cover border border-outline-variant" data-alt="A small, professional circular avatar portrait of a doctor, clear lighting, realistic style, dark mode UI context, isolated against a dark slate background, high quality, soft shadows." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCXFtHkXD3oQcg9eM4hBYSN6XWPkmXRgrLauZUDVvtUz6Aa0YfZrWoCaG8kUp8fqbIdAM39aoK-zq_9l07VJzQZc4ON65eu_XS-A0jhteT2bECzJNeEKKKDOypug3dq_adBXZhHLJROnjW0W40n1f849SimbPAZCdoYk6ajNdt2AySviL1qpB0g0BTC96y6UpEpe3lSgaxKuJlqQLES53ou2HfMmo0cMNAqA63uzlSy9RIJ0VQ5ROL2FQ"/>
+<span class="font-body-md text-body-md font-medium text-on-surface">Dr. Smith</span>
+<button class="ml-sm font-label-md text-label-md text-error hover:text-error-container transition-colors uppercase tracking-wider">Logout</button>
+</div>
+</div>
+</div>
+</nav>
+<!-- Main Content -->
+<main class="max-w-container-max mx-auto px-lg py-xl">
+<!-- Header Section -->
+<header class="flex justify-between items-center mb-xl">
+<h1 class="font-display-lg text-display-lg text-on-background">Your Queues</h1>
+<button class="gradient-btn px-lg py-sm rounded-lg font-label-md text-label-md text-background uppercase tracking-wider flex items-center gap-xs">
+<span class="material-symbols-outlined" style="font-size: 18px;">add</span>
+                Create Queue
+            </button>
+</header>
+<!-- Queue Grid -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-lg">
+<!-- Card 1 -->
+<div class="glass-panel rounded-xl p-lg relative overflow-hidden flex flex-col justify-between h-[200px] transition-all cursor-pointer group">
+<div class="absolute left-0 top-0 bottom-0 w-[4px] bg-primary"></div>
+<div class="flex justify-between items-start pl-sm">
+<div>
+<h2 class="font-headline-md text-headline-md text-on-surface mb-xs">OPD Counter 1</h2>
+<div class="flex items-center gap-xs">
+<span class="w-2 h-2 rounded-full bg-primary shadow-[0_0_8px_rgba(107,216,203,0.8)]"></span>
+<span class="font-label-md text-label-md text-primary uppercase">Active</span>
+</div>
+</div>
+<button class="text-on-surface-variant group-hover:text-primary transition-colors">
+<span class="material-symbols-outlined">more_vert</span>
+</button>
+</div>
+<div class="flex justify-between items-end pl-sm mt-md">
+<div>
+<div class="font-label-md text-label-md text-on-surface-variant uppercase mb-xs tracking-widest">People Waiting</div>
+<div class="font-display-lg text-display-lg text-primary-fixed leading-none">12</div>
+</div>
+<div class="font-body-sm text-body-sm text-on-surface-variant flex items-center gap-xs">
+<span class="material-symbols-outlined text-[16px]">check_circle</span>
+                        45 served today
+                    </div>
+</div>
+</div>
+<!-- Card 2 -->
+<div class="glass-panel rounded-xl p-lg relative overflow-hidden flex flex-col justify-between h-[200px] transition-all cursor-pointer group">
+<div class="absolute left-0 top-0 bottom-0 w-[4px] bg-primary"></div>
+<div class="flex justify-between items-start pl-sm">
+<div>
+<h2 class="font-headline-md text-headline-md text-on-surface mb-xs">General Pediatrics</h2>
+<div class="flex items-center gap-xs">
+<span class="w-2 h-2 rounded-full bg-primary shadow-[0_0_8px_rgba(107,216,203,0.8)]"></span>
+<span class="font-label-md text-label-md text-primary uppercase">Active</span>
+</div>
+</div>
+<button class="text-on-surface-variant group-hover:text-primary transition-colors">
+<span class="material-symbols-outlined">more_vert</span>
+</button>
+</div>
+<div class="flex justify-between items-end pl-sm mt-md">
+<div>
+<div class="font-label-md text-label-md text-on-surface-variant uppercase mb-xs tracking-widest">People Waiting</div>
+<div class="font-display-lg text-display-lg text-primary-fixed leading-none">5</div>
+</div>
+<div class="font-body-sm text-body-sm text-on-surface-variant flex items-center gap-xs">
+<span class="material-symbols-outlined text-[16px]">check_circle</span>
+                        28 served today
+                    </div>
+</div>
+</div>
+<!-- Card 3 -->
+<div class="glass-panel rounded-xl p-lg relative overflow-hidden flex flex-col justify-between h-[200px] transition-all cursor-pointer group">
+<div class="absolute left-0 top-0 bottom-0 w-[4px] bg-[#fbbf24]"></div>
+<div class="flex justify-between items-start pl-sm">
+<div>
+<h2 class="font-headline-md text-headline-md text-on-surface mb-xs">Vaccination Clinic</h2>
+<div class="flex items-center gap-xs">
+<span class="w-2 h-2 rounded-full bg-[#fbbf24] shadow-[0_0_8px_rgba(251,191,36,0.6)]"></span>
+<span class="font-label-md text-label-md text-[#fbbf24] uppercase">Busy</span>
+</div>
+</div>
+<button class="text-on-surface-variant group-hover:text-primary transition-colors">
+<span class="material-symbols-outlined">more_vert</span>
+</button>
+</div>
+<div class="flex justify-between items-end pl-sm mt-md">
+<div>
+<div class="font-label-md text-label-md text-on-surface-variant uppercase mb-xs tracking-widest">People Waiting</div>
+<div class="font-display-lg text-display-lg text-[#fbbf24] leading-none">20</div>
+</div>
+<div class="font-body-sm text-body-sm text-on-surface-variant flex items-center gap-xs">
+<span class="material-symbols-outlined text-[16px]">check_circle</span>
+                        62 served today
+                    </div>
+</div>
+</div>
+<!-- Card 4 -->
+<div class="glass-panel rounded-xl p-lg relative overflow-hidden flex flex-col justify-between h-[200px] transition-all cursor-pointer group">
+<div class="absolute left-0 top-0 bottom-0 w-[4px] bg-primary"></div>
+<div class="flex justify-between items-start pl-sm">
+<div>
+<h2 class="font-headline-md text-headline-md text-on-surface mb-xs">Lab Diagnostics</h2>
+<div class="flex items-center gap-xs">
+<span class="w-2 h-2 rounded-full bg-primary shadow-[0_0_8px_rgba(107,216,203,0.8)]"></span>
+<span class="font-label-md text-label-md text-primary uppercase">Active</span>
+</div>
+</div>
+<button class="text-on-surface-variant group-hover:text-primary transition-colors">
+<span class="material-symbols-outlined">more_vert</span>
+</button>
+</div>
+<div class="flex justify-between items-end pl-sm mt-md">
+<div>
+<div class="font-label-md text-label-md text-on-surface-variant uppercase mb-xs tracking-widest">People Waiting</div>
+<div class="font-display-lg text-display-lg text-primary-fixed leading-none">8</div>
+</div>
+<div class="font-body-sm text-body-sm text-on-surface-variant flex items-center gap-xs">
+<span class="material-symbols-outlined text-[16px]">check_circle</span>
+                        19 served today
+                    </div>
+</div>
+</div>
+</div>
+</main>
+<!-- Footer (From JSON) -->
+<footer class="bg-background dark:bg-background font-label-md text-label-md w-full py-md border-t border-outline-variant/20 mt-xl">
+<div class="flex flex-col md:flex-row justify-between items-center px-lg max-w-container-max mx-auto">
+<div class="font-headline-sm text-headline-sm text-on-surface mb-sm md:mb-0">
+                © 2024 QueueFlow Clinical Systems. All rights reserved.
+            </div>
+<div class="flex gap-md">
+<a class="text-on-surface-variant hover:text-tertiary transition-colors transition-opacity hover:opacity-100 opacity-70" href="#">Privacy Policy</a>
+<a class="text-on-surface-variant hover:text-tertiary transition-colors transition-opacity hover:opacity-100 opacity-70" href="#">Terms of Service</a>
+<a class="text-on-surface-variant hover:text-tertiary transition-colors transition-opacity hover:opacity-100 opacity-70" href="#">Support</a>
+</div>
+</div>
+</footer>
+</body></html>

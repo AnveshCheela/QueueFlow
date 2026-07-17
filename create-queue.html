@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Create New Queue - QueueFlow</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-surface": "#dee4e1",
+                        "tertiary": "#6cd3f7",
+                        "on-secondary-fixed": "#0d1c2e",
+                        "surface": "#0f1413",
+                        "background": "#0f1413",
+                        "surface-container-lowest": "#0a0f0e",
+                        "inverse-primary": "#006a61",
+                        "surface-container-high": "#262b2a",
+                        "secondary-fixed-dim": "#b9c7df",
+                        "primary-fixed": "#89f5e7",
+                        "on-secondary-container": "#abb9d1",
+                        "surface-variant": "#303635",
+                        "outline-variant": "#3d4947",
+                        "on-tertiary-fixed-variant": "#004e61",
+                        "on-tertiary": "#003543",
+                        "surface-bright": "#353a39",
+                        "on-primary-fixed-variant": "#005049",
+                        "on-error": "#690005",
+                        "outline": "#879391",
+                        "tertiary-fixed": "#b7eaff",
+                        "secondary-container": "#3c4a5e",
+                        "secondary": "#b9c7df",
+                        "error-container": "#93000a",
+                        "on-primary-fixed": "#00201d",
+                        "surface-tint": "#6bd8cb",
+                        "on-primary-container": "#00302b",
+                        "surface-container-highest": "#303635",
+                        "inverse-surface": "#dee4e1",
+                        "surface-dim": "#0f1413",
+                        "on-tertiary-container": "#002e3b",
+                        "secondary-fixed": "#d5e3fc",
+                        "inverse-on-surface": "#2c3130",
+                        "primary": "#6bd8cb",
+                        "tertiary-fixed-dim": "#6cd3f7",
+                        "on-surface-variant": "#bcc9c6",
+                        "tertiary-container": "#269dbe",
+                        "surface-container-low": "#171d1c",
+                        "primary-fixed-dim": "#6bd8cb",
+                        "surface-container": "#1b2120",
+                        "on-tertiary-fixed": "#001f28",
+                        "error": "#ffb4ab",
+                        "on-secondary-fixed-variant": "#3a485b",
+                        "on-secondary": "#233144",
+                        "on-background": "#dee4e1",
+                        "on-error-container": "#ffdad6",
+                        "primary-container": "#29a195",
+                        "on-primary": "#003732"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "container-max": "1440px",
+                        "xs": "4px",
+                        "md": "16px",
+                        "gutter": "20px",
+                        "sm": "8px",
+                        "base": "4px",
+                        "xl": "48px",
+                        "lg": "24px"
+                    },
+                    "fontFamily": {
+                        "body-md": ["Inter"],
+                        "body-lg": ["Inter"],
+                        "headline-lg": ["Inter"],
+                        "headline-sm": ["Inter"],
+                        "display-lg": ["Inter"],
+                        "mono-stats": ["Inter"],
+                        "label-md": ["Inter"],
+                        "headline-md": ["Inter"],
+                        "body-sm": ["Inter"]
+                    },
+                    "fontSize": {
+                        "body-md": ["16px", { "lineHeight": "1.6", "fontWeight": "400" }],
+                        "body-lg": ["18px", { "lineHeight": "1.6", "fontWeight": "400" }],
+                        "headline-lg": ["32px", { "lineHeight": "1.2", "letterSpacing": "-0.01em", "fontWeight": "600" }],
+                        "headline-sm": ["20px", { "lineHeight": "1.4", "fontWeight": "600" }],
+                        "display-lg": ["48px", { "lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                        "mono-stats": ["14px", { "lineHeight": "1", "letterSpacing": "0.02em", "fontWeight": "500" }],
+                        "label-md": ["12px", { "lineHeight": "1", "letterSpacing": "0.05em", "fontWeight": "600" }],
+                        "headline-md": ["24px", { "lineHeight": "1.3", "fontWeight": "600" }],
+                        "body-sm": ["14px", { "lineHeight": "1.5", "fontWeight": "400" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        .glass-modal {
+            background-color: rgba(15, 20, 19, 0.7);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(135, 147, 145, 0.2);
+            box-shadow: 0 0 15px rgba(107, 216, 203, 0.1);
+        }
+        .modal-glow-top {
+            border-top: 1px solid rgba(107, 216, 203, 0.5);
+        }
+        .btn-primary {
+            background: linear-gradient(to right, #29a195, #6cd3f7);
+            transition: all 0.3s ease;
+        }
+        .btn-primary:hover {
+            box-shadow: 0 0 10px rgba(107, 216, 203, 0.3);
+        }
+        .input-glow:focus {
+            outline: none;
+            border-color: #6bd8cb;
+            box-shadow: 0 0 0 4px rgba(107, 216, 203, 0.1);
+        }
+    </style>
+</head>
+<body class="bg-background text-on-surface h-screen w-screen overflow-hidden font-body-md antialiased flex flex-col relative">
+<!-- Mock Background Dashboard -->
+<div class="absolute inset-0 z-0 opacity-40 blur-sm pointer-events-none flex flex-col">
+<!-- TopAppBar -->
+<header class="fixed top-0 w-full z-50 bg-surface/60 backdrop-blur-xl border-b border-outline-variant/30 shadow-sm flex justify-between items-center px-gutter h-16">
+<div class="font-headline-md text-headline-md font-bold text-primary">QueueFlow</div>
+<div class="flex items-center gap-md text-on-surface-variant">
+<span class="material-symbols-outlined cursor-pointer hover:text-primary transition-colors">notifications</span>
+<span class="material-symbols-outlined cursor-pointer hover:text-primary transition-colors">settings</span>
+</div>
+</header>
+<main class="flex-1 mt-16 p-lg grid grid-cols-12 gap-lg">
+<div class="col-span-12 md:col-span-4 bg-surface-container rounded-lg border border-outline-variant/30 h-64 p-md">
+<div class="h-4 w-1/2 bg-surface-variant rounded mb-sm"></div>
+<div class="h-4 w-3/4 bg-surface-variant rounded"></div>
+</div>
+<div class="col-span-12 md:col-span-8 bg-surface-container rounded-lg border border-outline-variant/30 h-96 p-md">
+<div class="h-4 w-1/3 bg-surface-variant rounded mb-sm"></div>
+<div class="h-4 w-full bg-surface-variant rounded"></div>
+</div>
+</main>
+</div>
+<!-- Modal Overlay Background -->
+<div class="fixed inset-0 z-40 bg-surface-container-lowest/80 backdrop-blur-sm flex items-center justify-center p-md">
+<!-- Modal Container -->
+<div class="glass-modal modal-glow-top rounded-xl w-full max-w-[480px] flex flex-col overflow-hidden relative z-50">
+<!-- Header -->
+<div class="flex justify-between items-center p-lg border-b border-outline-variant/30">
+<h2 class="font-headline-sm text-headline-sm text-on-surface m-0">Create New Queue</h2>
+<button class="text-on-surface-variant hover:text-on-surface transition-colors bg-transparent border-none p-xs cursor-pointer rounded-full hover:bg-surface-variant">
+<span class="material-symbols-outlined text-[20px]">close</span>
+</button>
+</div>
+<!-- Body -->
+<div class="p-lg">
+<label class="block font-label-md text-label-md text-on-surface-variant mb-sm uppercase tracking-wider" for="queueName">Queue Name</label>
+<input class="w-full bg-[#1e293b] border border-[#334155] rounded-lg px-md py-sm font-body-md text-body-md text-white placeholder-outline-variant/50 input-glow transition-all duration-200" id="queueName" placeholder="e.g. OPD Counter 1" type="text"/>
+</div>
+<!-- Footer -->
+<div class="flex justify-end items-center gap-sm p-lg border-t border-outline-variant/30 bg-surface-container-low/50">
+<button class="px-md py-sm rounded-lg font-label-md text-label-md text-on-surface-variant bg-transparent border border-outline-variant/50 hover:border-primary hover:text-primary transition-colors cursor-pointer">
+                    Cancel
+                </button>
+<button class="btn-primary px-md py-sm rounded-lg font-label-md text-label-md text-white border-none cursor-pointer flex items-center gap-xs">
+                    Create Queue
+                </button>
+</div>
+</div>
+</div>
+<!-- Footer Mock (obscured) -->
+<footer class="w-full py-lg bg-surface-container-lowest border-t border-outline-variant/20 flex flex-col md:flex-row justify-between items-center px-gutter gap-md absolute bottom-0 z-0 opacity-40 pointer-events-none blur-sm">
+<div class="font-headline-sm text-headline-sm text-on-surface">QueueFlow</div>
+<div class="font-label-md text-label-md text-secondary">© 2024 QueueFlow Clinical Systems.</div>
+</footer>
+</body></html>
