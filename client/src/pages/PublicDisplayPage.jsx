@@ -43,7 +43,7 @@ export default function PublicDisplayPage() {
   const [clock, setClock] = useState('');
   const [loading, setLoading] = useState(true);
   const [lang, setLang] = useState('en');
-  const [lastSpokenToken, setLastSpokenToken] = useState(null);
+  const [lastSpoken, setLastSpoken] = useState(null);
   
   const LANGS = ['en', 'hi', 'te'];
 
@@ -109,15 +109,19 @@ export default function PublicDisplayPage() {
 
   // Text-to-Speech Voice Announcement
   useEffect(() => {
-    if (inServiceToken && inServiceToken._id !== lastSpokenToken) {
-      const msg = new SpeechSynthesisUtterance();
-      msg.text = TRANSLATIONS[lang].callVoice(inServiceToken.tokenNumber || '', inServiceToken.personName || '');
-      msg.lang = TRANSLATIONS[lang].langCode;
-      msg.rate = 0.9;
-      window.speechSynthesis.speak(msg);
-      setLastSpokenToken(inServiceToken._id);
+    if (inServiceToken) {
+      const signature = `${inServiceToken._id}-${lang}`;
+      if (signature !== lastSpoken) {
+        window.speechSynthesis.cancel(); // Cancel any ongoing speech
+        const msg = new SpeechSynthesisUtterance();
+        msg.text = TRANSLATIONS[lang].callVoice(inServiceToken.tokenNumber || '', inServiceToken.personName || '');
+        msg.lang = TRANSLATIONS[lang].langCode;
+        msg.rate = 0.9;
+        window.speechSynthesis.speak(msg);
+        setLastSpoken(signature);
+      }
     }
-  }, [inServiceToken, lastSpokenToken, lang]);
+  }, [inServiceToken, lastSpoken, lang]);
 
   if (loading) {
     return (
