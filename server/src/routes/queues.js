@@ -193,15 +193,27 @@ router.get('/:id/analytics', async (req, res) => {
 
       const dayTokens = completedTokens.filter((t) => t.createdAt >= d && t.createdAt < nextD);
       let dTotalWait = 0;
+      let dTotalService = 0;
+      let serviceCount = 0;
+      
       dayTokens.forEach((t) => {
         const start = new Date(t.createdAt).getTime();
-        const end = new Date(t.calledAt || t.completedAt).getTime();
-        dTotalWait += (end - start);
+        const called = t.calledAt ? new Date(t.calledAt).getTime() : null;
+        const end = new Date(t.completedAt).getTime();
+        
+        dTotalWait += ((called || end) - start);
+        
+        if (called && end) {
+          dTotalService += (end - called);
+          serviceCount++;
+        }
       });
-      const dAvgWait = dayTokens.length ? Math.round((dTotalWait / dayTokens.length) / 60000) : 0;
+      
+      const dAvgWait = dayTokens.length ? Math.round(((dTotalWait / dayTokens.length) / 60000) * 10) / 10 : 0;
+      const dAvgService = serviceCount ? Math.round(((dTotalService / serviceCount) / 60000) * 10) / 10 : 0;
       
       const dayStr = d.toLocaleDateString('en-US', { weekday: 'short' });
-      weeklyData.push({ day: dayStr, avgWait: dAvgWait });
+      weeklyData.push({ day: dayStr, avgWait: dAvgWait, avgServiceTime: dAvgService });
     }
 
     res.json({
