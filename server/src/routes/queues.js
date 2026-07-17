@@ -31,10 +31,16 @@ router.get('/', async (req, res) => {
           completedAt: { $gte: startOfDay }
         });
 
+        const inServiceToken = await Token.findOne({
+          queueId: queue._id,
+          status: 'in-service'
+        });
+
         return {
           ...queue.toObject(),
           waitingCount,
           servedToday,
+          inServiceToken,
         };
       })
     );

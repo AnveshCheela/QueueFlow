@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import api from '../lib/api';
 import Navbar from '../components/Navbar';
 import Modal from '../components/Modal';
@@ -64,13 +64,22 @@ export default function DashboardPage() {
         {/* Header */}
         <header className="flex justify-between items-center mb-12">
           <h1 className="text-3xl font-bold text-white tracking-tight">Active Queues</h1>
-          <button
-            onClick={() => setModalOpen(true)}
-            className="gradient-btn px-6 py-2 rounded-lg text-xs font-semibold text-background uppercase tracking-wider flex items-center gap-1 cursor-pointer border-0"
-          >
-            <span className="material-symbols-outlined" style={{ fontSize: '18px' }}>add</span>
-            Create Queue
-          </button>
+          <div className="flex items-center gap-4">
+            <Link
+              to="/global-display"
+              className="px-4 py-2 rounded-lg text-xs font-semibold text-white bg-white/10 hover:bg-white/20 uppercase tracking-wider flex items-center gap-2 transition-colors border border-white/20"
+            >
+              <span className="material-symbols-outlined" style={{ fontSize: '18px' }}>desktop_windows</span>
+              Global TV Display
+            </Link>
+            <button
+              onClick={() => setModalOpen(true)}
+              className="gradient-btn px-6 py-2 rounded-lg text-xs font-semibold text-background uppercase tracking-wider flex items-center gap-1 cursor-pointer border-0"
+            >
+              <span className="material-symbols-outlined" style={{ fontSize: '18px' }}>add</span>
+              Create Queue
+            </button>
+          </div>
         </header>
 
         {/* Queue Grid */}

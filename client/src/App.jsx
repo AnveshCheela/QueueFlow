@@ -12,6 +12,7 @@ import AboutPage from './pages/AboutPage';
 import ContactPage from './pages/ContactPage';
 import PrivacyPolicyPage from './pages/PrivacyPolicyPage';
 import MobileStatusPage from './pages/MobileStatusPage';
+import GlobalDisplayPage from './pages/GlobalDisplayPage';
 
 export default function App() {
   return (
@@ -48,6 +49,14 @@ export default function App() {
             element={
               <ProtectedRoute>
                 <ProfilePage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/global-display"
+            element={
+              <ProtectedRoute>
+                <GlobalDisplayPage />
               </ProtectedRoute>
             }
           />
