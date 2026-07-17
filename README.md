@@ -15,18 +15,9 @@ A modern full-stack application for managing clinic and OPD token queues.
 
 ## Setup Instructions
 
-### 1. Backend Setup
-1. Open the `/server` directory: `cd server`
-2. Install dependencies: `npm install`
-3. The `.env` file should contain your MongoDB Atlas URI. 
-   ```env
-   MONGODB_URI=mongodb+srv://<username>:<password>@cluster.mongodb.net/queueflow?retryWrites=true&w=majority
-   JWT_SECRET=super-secret-jwt-key
-   PORT=5000
-   ```
-4. Start the server: `npm start` (Runs on port 5000)
 
-### 2. Frontend Setup
+
+### 1. Frontend Setup
 1. Open the `/client` directory: `cd client`
 2. Install dependencies: `npm install`
 3. Start the dev server: `npm run dev` (Runs on port 3000, proxies `/api` to port 5000)
