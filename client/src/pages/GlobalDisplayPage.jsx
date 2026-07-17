@@ -182,31 +182,31 @@ export default function GlobalDisplayPage() {
         <main className="flex-1 min-h-0 relative">
           <div className={`w-full h-full grid gap-6 ${queues.length <= 4 ? 'grid-cols-1 md:grid-cols-2' : 'grid-cols-1 sm:grid-cols-2 xl:grid-cols-3'}`}>
             {queues.map((queue) => (
-              <div key={queue._id} className="glass-panel rounded-[24px] border border-white/20 p-6 flex flex-col relative overflow-hidden group shadow-2xl">
+              <div key={queue._id} className="glass-panel rounded-[24px] border border-white/20 p-4 xl:p-6 flex flex-col relative overflow-hidden group shadow-2xl">
                 <div className="absolute top-0 left-0 w-full h-2 bg-white/20" />
                 
-                <h2 className="text-[clamp(1.25rem,2.5vw,1.75rem)] font-bold text-white mb-2 tracking-tight truncate border-b border-white/10 pb-3 shrink-0">
+                <h2 className="text-[clamp(1rem,3vh,1.75rem)] font-bold text-white mb-2 tracking-tight truncate border-b border-white/10 pb-2 shrink-0">
                   {queue.name}
                 </h2>
                 
                 <div className="flex-1 flex flex-col items-center justify-center text-center mt-1 min-h-0">
-                  <h3 className="text-[clamp(0.875rem,1.5vw,1.125rem)] font-bold text-on-surface-variant uppercase tracking-[0.15em] mb-1 xl:mb-2 shrink-0">
+                  <h3 className="text-[clamp(0.75rem,2vh,1.125rem)] font-bold text-on-surface-variant uppercase tracking-[0.15em] mb-1 xl:mb-2 shrink-0">
                     {TRANSLATIONS[lang].nowServing}
                   </h3>
                   
                   {queue.inServiceToken ? (
                     <div className="flex-1 flex flex-col items-center justify-center min-h-0 w-full">
-                      <div className="text-[clamp(2.5rem,6vw,72px)] font-black text-white leading-none tracking-tighter mb-1 drop-shadow-lg shrink-0">
+                      <div className="text-[clamp(2rem,8vh,72px)] font-black text-white leading-none tracking-tighter mb-1 drop-shadow-lg shrink-0">
                         #{queue.inServiceToken.tokenNumber}
                       </div>
-                      <div className="text-[clamp(1.25rem,3vw,32px)] font-bold text-white tracking-tight truncate w-full px-2 shrink-0">
+                      <div className="text-[clamp(1rem,4vh,32px)] font-bold text-white tracking-tight truncate w-full px-2 shrink-0">
                         {queue.inServiceToken.personName}
                       </div>
                     </div>
                   ) : (
                     <div className="flex-1 flex flex-col items-center justify-center min-h-0">
-                      <div className="text-[clamp(2.5rem,6vw,72px)] font-black text-white/10 leading-none tracking-tighter mb-2 shrink-0">—</div>
-                      <div className="text-[clamp(1rem,2vw,1.25rem)] font-medium text-white/40 shrink-0">{TRANSLATIONS[lang].waiting}</div>
+                      <div className="text-[clamp(2rem,8vh,72px)] font-black text-white/10 leading-none tracking-tighter mb-2 shrink-0">—</div>
+                      <div className="text-[clamp(1rem,2vh,1.25rem)] font-medium text-white/40 shrink-0">{TRANSLATIONS[lang].waiting}</div>
                     </div>
                   )}
                 </div>
