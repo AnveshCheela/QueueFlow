@@ -6,9 +6,12 @@ services:
     rootDir: server
     buildCommand: npm install
     startCommand: npm start
+    port: 5000
     envVars:
       - key: NODE_ENV
         value: production
+      - key: PORT
+        value: 5000
       - key: MONGODB_URI
         sync: false
       - key: JWT_SECRET
