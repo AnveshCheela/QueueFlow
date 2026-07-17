@@ -58,8 +58,7 @@ export default function AnalyticsPage() {
         // Use fallback data, also try to get basic stats from the queue
         try {
           const { data } = await api.get(`/queues/${id}`);
-          const q = data.queue || data;
-          const tks = q.tokens || [];
+          const tks = data.tokens || [];
           setStats({
             waiting: tks.filter(t => t.status === 'waiting').length,
             served: tks.filter(t => t.status === 'completed').length,
@@ -79,8 +78,7 @@ export default function AnalyticsPage() {
   const handleExportCSV = async () => {
     try {
       const { data } = await api.get(`/queues/${id}`);
-      const q = data.queue || data;
-      const tks = q.tokens || [];
+      const tks = data.tokens || [];
       
       let csvContent = "Token Number,Patient Name,Status,Created At,Completed At\n";
       tks.forEach(t => {
