@@ -45,6 +45,7 @@ export default function PublicDisplayPage() {
   const [loading, setLoading] = useState(true);
   const [lang, setLang] = useState('en');
   const spokenTokenRef = useRef(null);
+  const hasInitializedVoice = useRef(false);
   const LANGS = ['en', 'hi', 'te'];
 
   // Fetch queue data
@@ -101,14 +102,21 @@ export default function PublicDisplayPage() {
 
   // Text-to-Speech Voice Announcements
   useEffect(() => {
+    if (loading) return;
     if (!tokens) return;
 
     const inServiceToken = tokens.find((t) => t.status === 'in-service');
 
-    // We only announce when there's an in-service token
     if (inServiceToken) {
       // Signature based only on token ID so it only speaks once per patient
       const signature = `${inServiceToken._id}`;
+      
+      if (!hasInitializedVoice.current) {
+        // First load: just record the token, don't speak
+        spokenTokenRef.current = signature;
+        hasInitializedVoice.current = true;
+        return;
+      }
       
       if (spokenTokenRef.current !== signature) {
         // Stop any currently playing audio

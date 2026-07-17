@@ -35,8 +35,9 @@ export default function GlobalDisplayPage() {
   const [loading, setLoading] = useState(true);
   const [lang, setLang] = useState('en');
   
-  // Track spoken tokens to avoid repeating: { [queueId]: `${tokenId}-${lang}` }
+  // Track spoken tokens to avoid repeating: { [queueId]: `${tokenId}` }
   const spokenTokensRef = useRef({});
+  const hasInitializedVoice = useRef(false);
 
   const fetchData = async () => {
     try {
@@ -85,7 +86,18 @@ export default function GlobalDisplayPage() {
 
   // Text-to-Speech Voice Announcements across all queues
   useEffect(() => {
+    if (loading) return;
     if (queues.length === 0) return;
+
+    if (!hasInitializedVoice.current) {
+      queues.forEach(queue => {
+        if (queue.inServiceToken) {
+          spokenTokensRef.current[queue._id] = `${queue.inServiceToken._id}`;
+        }
+      });
+      hasInitializedVoice.current = true;
+      return;
+    }
 
     queues.forEach(queue => {
       if (queue.inServiceToken) {
